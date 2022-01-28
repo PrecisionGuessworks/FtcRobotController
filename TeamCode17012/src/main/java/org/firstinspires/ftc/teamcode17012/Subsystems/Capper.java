@@ -15,7 +15,7 @@ public class Capper {
         horizontalServo = hardwareMap.get(CRServo.class, "horizontalServo");
         verticalServo = hardwareMap.get(Servo.class, "verticalServo");
         extenderServo = hardwareMap.get(CRServo.class, "extenderServo");
-        verticalServo.scaleRange(0.33, 0.95);
+        verticalServo.scaleRange(0.5, 0.95);
     }
 
     public void setPowerOfExtenderServo(double power){
