@@ -125,7 +125,7 @@ public class TeleopMode extends OpMode {
         capper.setPowerOfTurretServo(-gamepad2.right_stick_x);
 
         double verticalOrientation = capper.getVerticalOrientation();
-
+        telemetry.addData("Angle val", verticalOrientation);
         // change angle of capper
         capper.setOrientation(verticalOrientation + (gamepad2.right_stick_y * 0.001));
     }

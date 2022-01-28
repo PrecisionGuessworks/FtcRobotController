@@ -12,11 +12,10 @@ public class Capper {
     private CRServo extenderServo, horizontalServo;
 
     public Capper(HardwareMap hardwareMap, Telemetry telemetry){
-
         horizontalServo = hardwareMap.get(CRServo.class, "horizontalServo");
         verticalServo = hardwareMap.get(Servo.class, "verticalServo");
         extenderServo = hardwareMap.get(CRServo.class, "extenderServo");
-
+        verticalServo.scaleRange(0.33, 0.95);
     }
 
     public void setPowerOfExtenderServo(double power){
