@@ -107,7 +107,6 @@ public class TeleopMode extends OpMode {
             telemetry.addLine("circle pressed");
         } else {
             blockArm.setPosition(0.5);
-
         }
     }
 
@@ -115,7 +114,6 @@ public class TeleopMode extends OpMode {
         // extending tape measure
         if (gamepad2.dpad_right) {
             capper.setPowerOfExtenderServo(1);
-            telemetry.addLine("dpadRIGHT");
             telemetry.update();
         } else if (gamepad2.dpad_left){
             capper.setPowerOfExtenderServo(-1);
