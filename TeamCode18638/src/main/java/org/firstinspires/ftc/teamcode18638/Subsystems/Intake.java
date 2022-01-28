@@ -1,32 +1,36 @@
 package org.firstinspires.ftc.teamcode18638.Subsystems;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake {
+    // Note: There might not be 2 programmed servos for the intake. It might be 2 paired electrically with one in reverse. Therefore, code may only be needed for one. Currently unknown.
     private CRServo leftIntakeServo;
     private CRServo rightIntakeServo;
 
-    public Intake(hardwareMap hardwareMap, Telemetry telemetry){
-        leftIntakeSevo = hardwareMap.get(CRservo.class, "LeftIntakeServo");
-        rightIntakeServo = hardwareMap.get(CRservo.class, "RightIntakeServo");
+    public Intake(HardwareMap hardwareMap , Telemetry telemetry){
+        leftIntakeServo = hardwareMap.get(CRServo.class, "LeftIntakeServo");
+        rightIntakeServo = hardwareMap.get(CRServo.class, "RightIntakeServo");
 
-        leftIntakeServo.setDirection(CRServo.Direction.Forword);
-        rightIntakeServo.setDirection(CRServo.Direction.Backword);
+        leftIntakeServo.setDirection(CRServo.Direction.FORWARD);
+        rightIntakeServo.setDirection(CRServo.Direction.REVERSE);
     }
 
     public void intake(){
-        setPower(0.5);
+        setIntakePower(0.5);
     }
-    public void idle(){
-        setpower(0);
+
+    public void stopIntaking(){
+        setIntakePower(0);
     }
     public void spitout(){
-        setPower(-0.5);
-
+        setIntakePower(-0.5);
     }
-    public void setPower(double power){
+
+    public void setIntakePower(double power){
         leftIntakeServo.setPower(power);
         rightIntakeServo.setPower(power);
     }
