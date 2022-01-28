@@ -39,7 +39,7 @@ public class TeleopMode extends OpMode {
         getTelemetry();
 
         // set capper angle position, powering the servo's position
-        capper.setOrientation(0);
+        capper.setOrientation(0.5);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized    \n18638 is ready to play.\n\n:)");
@@ -127,7 +127,7 @@ public class TeleopMode extends OpMode {
         double verticalOrientation = capper.getVerticalOrientation();
 
         // change angle of capper
-        capper.setOrientation(verticalOrientation + gamepad2.right_stick_y);
+        capper.setOrientation(verticalOrientation + (gamepad2.right_stick_y * 0.001));
     }
 
     public void getTelemetry() {
