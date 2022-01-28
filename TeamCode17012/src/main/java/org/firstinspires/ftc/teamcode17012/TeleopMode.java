@@ -112,22 +112,22 @@ public class TeleopMode extends OpMode {
 
     public void checkOperatorController(){
         // extending tape measure
-        if (gamepad2.dpad_right) {
+        if (gamepad2.left_bumper) {
             capper.setPowerOfExtenderServo(1);
             telemetry.update();
-        } else if (gamepad2.dpad_left){
+        } else if (gamepad2.right_bumper){
             capper.setPowerOfExtenderServo(-1);
         } else {
             capper.setPowerOfExtenderServo(0);
         }
 
         // turning capper
-        capper.setPowerOfTurretServo(-gamepad2.right_stick_x);
+        capper.setPowerOfTurretServo(-gamepad2.right_stick_x * 0.85);
 
         double verticalOrientation = capper.getVerticalOrientation();
         telemetry.addData("Angle val", verticalOrientation);
         // change angle of capper
-        capper.setOrientation(verticalOrientation + (gamepad2.right_stick_y * 0.001));
+        capper.setOrientation(verticalOrientation + (gamepad2.left_stick_y * 0.001));
     }
 
     public void getTelemetry() {
