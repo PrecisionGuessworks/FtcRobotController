@@ -47,7 +47,7 @@ public class BlueDuckHubAuto extends LinearOpMode {
 
         // drive away
         drivetrain.mecanumDrive_Cartesian(-0.75, 0, 0);
-        utilities.delay(2500);
+        utilities.delay(3000);
 
         drivetrain.stopDriving();
     }

@@ -51,27 +51,27 @@ public class RedDuckHubAuto extends LinearOpMode {
         utilities.delay(3300);
 
         // turn
-        drivetrain.mecanumDrive_Cartesian(0,0, .8);
+        drivetrain.mecanumDrive_Cartesian(0,0, -.8);
         utilities.delay(1525);
 
         // drive to hub
-        drivetrain.mecanumDrive_Cartesian(0, .75, 0);
+        drivetrain.mecanumDrive_Cartesian(0, -.75, 0);
         utilities.delay(2725);
         drivetrain.stopDriving();
 
         // yeet block
         blockArm.setPosition(.75);
         utilities.delay(750);
-        blockArm.setPosition(1);
+        blockArm.setPosition(.5);
         utilities.delay(750);
 
         // back away from hub
-        drivetrain.mecanumDrive_Cartesian(0, -.75, 0);
+        drivetrain.mecanumDrive_Cartesian(0, .75, 0);
         utilities.delay(3200);
 
         // to depot
-        drivetrain.mecanumDrive_Cartesian(-.75, 0, 0);
-        utilities.delay(1750);
+        drivetrain.mecanumDrive_Cartesian(.75, 0, 0);
+        utilities.delay(2250);
         drivetrain.stopDriving();
     }
     //x positive=right, y positive=back, rotation positive=right

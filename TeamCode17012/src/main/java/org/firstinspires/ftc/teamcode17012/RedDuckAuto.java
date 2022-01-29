@@ -35,13 +35,13 @@ public class RedDuckAuto extends LinearOpMode {
         drivetrain.mecanumDrive_Cartesian(0.0, 0.75, 0.0);
         utilities.delay( 750);
         drivetrain.mecanumDrive_Cartesian(.75, 0, 0);
-        utilities.delay(750);
+        utilities.delay(900);
         drivetrain.stopDriving();
         duckSpinner.setDuckMotorPower(.35);
         utilities.delay(3000);
         duckSpinner.setDuckMotorPower(0);
         drivetrain.mecanumDrive_Cartesian(0, .75, 0);
-        utilities.delay(2000);
+        utilities.delay(1800);
         drivetrain.stopDriving();
     }
     //x positive=right, y positive=back, rotation positive=right

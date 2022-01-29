@@ -95,16 +95,23 @@ public class TeleopMode extends OpMode {
         drivetrain.mecanumDrive_Cartesian(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
         if (gamepad1.cross) {
             duckSpinner.setDuckMotorPower(.5);
+        } else if (gamepad1.dpad_down) {
+            duckSpinner.setDuckMotorPower(0.5);
         } else if (gamepad1.triangle) {
-            duckSpinner.setDuckMotorPower(-.5);
+            duckSpinner.setDuckMotorPower(-0.5);
         } else if (gamepad1.dpad_up) {
+            duckSpinner.setDuckMotorPower(-0.5);
+        } else if (gamepad1.dpad_right) { // panic
             duckSpinner.setDuckMotorPower(1);
+        } else if (gamepad1.circle) { // panic
+            duckSpinner.setDuckMotorPower(-1);
         } else {
             duckSpinner.setDuckMotorPower(0);
         }
-        if (gamepad1.circle) {
+
+        if (gamepad1.right_bumper) {
             blockArm.setPosition(1);
-            telemetry.addLine("circle pressed");
+            telemetry.addLine("block throw");
         } else {
             blockArm.setPosition(0.5);
         }
@@ -122,7 +129,7 @@ public class TeleopMode extends OpMode {
         }
 
         // turning capper
-        capper.setPowerOfTurretServo(-gamepad2.right_stick_x * 0.85);
+        capper.setPowerOfTurretServo(-gamepad2.right_stick_x * 0.25);
 
         double verticalOrientation = capper.getVerticalOrientation();
         telemetry.addData("Angle val", verticalOrientation);
