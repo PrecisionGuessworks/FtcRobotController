@@ -19,6 +19,8 @@ public class TankDrivetrain {
     private double m_quickStopAlpha = DEFAULTQUICKSTOPALPHA;
     private double m_quickStopAccumulator;
 
+    private double minDrivePowerToBreakStaticFriction = 0.2;
+
     public TankDrivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
         frontLeft  = hardwareMap.get(DcMotor.class, "FL");
         backLeft  = hardwareMap.get(DcMotor.class, "BL");
@@ -39,6 +41,10 @@ public class TankDrivetrain {
         backRight.setPower(rightSpeed);
         telemetry.addData("setLeft", leftSpeed);
         telemetry.addData("setRight", rightSpeed);
+    }
+
+    public void stopDriving() {
+        arcadeDrive(0,0);
     }
 
     public void setPower(double[] powers){
