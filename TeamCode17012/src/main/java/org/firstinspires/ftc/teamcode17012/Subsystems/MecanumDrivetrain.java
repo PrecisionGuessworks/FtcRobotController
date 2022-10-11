@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode17012.Subsystems;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class MecanumDrivetrain {
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
     final double DRIVE_SPEED_MODIFER = 0.75;
+
 
     public MecanumDrivetrain(HardwareMap hardwareMap, Telemetry telemtry) {
         frontLeftMotor = hardwareMap.get(DcMotor.class, "FL");
@@ -63,6 +67,18 @@ public class MecanumDrivetrain {
 
         return x;
     }   // deadband
+
+    public void mecanumFieldOrientated(double x, double y, double rotation) {
+        final double PI = Math.PI;
+        double gyroHeading = imu.getHeadingInRad(); // TODO: Create IMU class and this method
+        double temp = y * cos(gyroHeading) + x * sin(gyroHeading);
+        x = -y * sin(gyroHeading) + x * cos(gyroHeading);
+        y = temp;
+
+        double wheelSpeeds[] = new double[4];
+
+        mecanumDrive_Cartesian(x, y, rotation);
+    }
 
     public void mecanumDrive_Cartesian(double x, double y, double rotation) {
         double wheelSpeeds[] = new double[4];
