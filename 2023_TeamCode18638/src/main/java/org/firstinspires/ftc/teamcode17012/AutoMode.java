@@ -25,15 +25,13 @@ public class AutoMode extends LinearOpMode {
     @Override
     public void runOpMode() {
         drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
-        duckSpinner = new DuckSpinner(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
 
         waitForStart();
 
 
         //Drive Forward for 0.5 seconds
-        //drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-        duckSpinner.setDuckMotorPower(.5);
+        drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
         utilities.delay( 2750);
         drivetrain.stopDriving();
     }

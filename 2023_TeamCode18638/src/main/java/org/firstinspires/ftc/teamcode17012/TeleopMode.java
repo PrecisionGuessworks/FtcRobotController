@@ -19,10 +19,8 @@ import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 public class TeleopMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     MecanumDrivetrain drivetrain;
-    DuckSpinner duckSpinner;
     BotUtilities utilities;
-    BlockArm blockArm;
-    Capper capper;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -30,16 +28,10 @@ public class TeleopMode extends OpMode {
     @Override
     public void init() {
         drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
-        duckSpinner = new DuckSpinner(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
-        blockArm = new BlockArm(this.hardwareMap, this.telemetry);
-        capper = new Capper(this.hardwareMap, this.telemetry);
 
         // Set up our telemetry dashboard
         getTelemetry();
-
-        // set capper angle position, powering the servo's position
-        capper.setOrientation(0.5);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized    \n18638 is ready to play.\n\n:)");
