@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class
-MecanumDrivetrain {
+public class MecanumDrivetrain {
+    NavX imu;
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
     final double DRIVE_SPEED_MODIFER = 0.75;
 
@@ -25,6 +25,7 @@ MecanumDrivetrain {
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        imu = new NavX(hardwareMap, telemtry);
     }
 
     public void stopDriving() {

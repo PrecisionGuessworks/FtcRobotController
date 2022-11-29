@@ -4,15 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode17012.Subsystems.BlockArm;
 import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
-import org.firstinspires.ftc.teamcode17012.Subsystems.Capper;
-import org.firstinspires.ftc.teamcode17012.Subsystems.DuckSpinner;
 import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
+import org.firstinspires.ftc.teamcode17012.Subsystems.NavX;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-@TeleOp(name="MEC Mode from AS", group="Mecanum")
+@TeleOp(name="Teleop Mode", group="Mecanum")
 //@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +18,7 @@ public class TeleopMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     MecanumDrivetrain drivetrain;
     BotUtilities utilities;
+    NavX imu;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -84,49 +83,15 @@ public class TeleopMode extends OpMode {
 
     public void checkDriverController() {
         telemetry.addLine("Updating DriverControl");
-        drivetrain.mecanumDrive_Cartesian(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
-        if (gamepad1.cross) {
-            duckSpinner.setDuckMotorPower(.5);
-        } else if (gamepad1.dpad_down) {
-            duckSpinner.setDuckMotorPower(0.5);
-        } else if (gamepad1.triangle) {
-            duckSpinner.setDuckMotorPower(-0.5);
-        } else if (gamepad1.dpad_up) {
-            duckSpinner.setDuckMotorPower(-0.5);
-        } else if (gamepad1.dpad_right) { // panic
-            duckSpinner.setDuckMotorPower(1);
-        } else if (gamepad1.circle) { // panic
-            duckSpinner.setDuckMotorPower(-1);
-        } else {
-            duckSpinner.setDuckMotorPower(0);
-        }
 
-        if (gamepad1.right_bumper) {
-            blockArm.setPosition(1);
-            telemetry.addLine("block throw");
-        } else {
-            blockArm.setPosition(0.5);
-        }
+        // Drive Control
+        drivetrain.mecanumDrive_Cartesian(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+
+        // TODO: Add any controls of operation for the driver
     }
 
     public void checkOperatorController(){
-        // extending tape measure
-        if (gamepad2.left_bumper) {
-            capper.setPowerOfExtenderServo(1);
-            telemetry.update();
-        } else if (gamepad2.right_bumper){
-            capper.setPowerOfExtenderServo(-1);
-        } else {
-            capper.setPowerOfExtenderServo(0);
-        }
-
-        // turning capper
-        capper.setPowerOfTurretServo(-gamepad2.right_stick_x * 0.25);
-
-        double verticalOrientation = capper.getVerticalOrientation();
-        telemetry.addData("Angle val", verticalOrientation);
-        // change angle of capper
-        capper.setOrientation(verticalOrientation + (gamepad2.left_stick_y * 0.001));
+        // TODO: Add any controls of operation for the operator
     }
 
     public void getTelemetry() {
