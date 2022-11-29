@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class MecanumDrivetrain {
+public class
+MecanumDrivetrain {
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
     final double DRIVE_SPEED_MODIFER = 0.75;
 
