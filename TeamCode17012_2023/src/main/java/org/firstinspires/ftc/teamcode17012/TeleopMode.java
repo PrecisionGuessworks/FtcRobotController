@@ -33,7 +33,7 @@ public class TeleopMode extends OpMode {
         getTelemetry();
 
         // Tell the driver that initialization is complete.
-        telemetry.addData("Status", "Initialized    \n18638 is ready to play.\n\n:)");
+        telemetry.addData("Status", "Initialized    \n17012 is ready to play.\n\n:)");
     }//
 
 //////////////////////////////////////////////////////////////////////////////////////////
