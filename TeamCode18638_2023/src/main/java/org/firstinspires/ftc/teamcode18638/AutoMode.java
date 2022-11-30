@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode17012;
+package org.firstinspires.ftc.teamcode18638;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
-import org.firstinspires.ftc.teamcode17012.Subsystems.DuckSpinner;
-import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
+import org.firstinspires.ftc.teamcode18638.Subsystems.BotUtilities;
+import org.firstinspires.ftc.teamcode18638.Subsystems.MecanumDrivetrain;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 @Autonomous(name="Drive Forward", group="Mec")
@@ -16,7 +15,6 @@ import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 public class AutoMode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     MecanumDrivetrain drivetrain;
-    DuckSpinner duckSpinner;
     BotUtilities utilities;
 
 //////////////////////////////////////////////////////////////////////////////////////////
