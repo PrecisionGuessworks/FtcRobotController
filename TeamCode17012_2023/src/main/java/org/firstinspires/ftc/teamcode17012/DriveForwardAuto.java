@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 //@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
-public class AutoMode extends LinearOpMode {
+public class DriveForwardAuto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     MecanumDrivetrain drivetrain;
     BotUtilities utilities;
