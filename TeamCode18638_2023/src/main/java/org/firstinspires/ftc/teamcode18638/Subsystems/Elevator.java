@@ -14,11 +14,14 @@ public class Elevator {
         this.telemetry = telemetry;
 
         // TODO: Use hardwareMap.get to setup the elevator motor
+
         // TODO: Use setDirection to set up the direction of elevator function (Up "Forwards", Down "Backwards")
         // TODO: Use setZeroPowerBehavior to set motor to brake mode
     }
 
     // TODO: Write method for running the elevator
+
+    }
     // TODO: Write method for stopping elevator motion
 
     // TODO: (Long term) Write method to freeze elevator in place (reading encoder and making sure it doesn't slip)
