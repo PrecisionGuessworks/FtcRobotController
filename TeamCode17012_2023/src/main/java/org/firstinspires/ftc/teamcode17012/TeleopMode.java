@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
+import org.firstinspires.ftc.teamcode17012.Subsystems.Camera;
 import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 import org.firstinspires.ftc.teamcode17012.Subsystems.NavX;
 
@@ -19,6 +20,7 @@ public class TeleopMode extends OpMode {
     MecanumDrivetrain drivetrain;
     BotUtilities utilities;
     NavX imu;
+    Camera camera;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +30,7 @@ public class TeleopMode extends OpMode {
     public void init() {
         drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
+        camera = new Camera(this.hardwareMap, this.telemetry);
 
         // Set up our telemetry dashboard
         getTelemetry();
@@ -41,6 +44,8 @@ public class TeleopMode extends OpMode {
     /* Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY */
     @Override
     public void init_loop() {
+        telemetry.addData("tag", camera.getCurrentTag());
+        telemetry.update();
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////
