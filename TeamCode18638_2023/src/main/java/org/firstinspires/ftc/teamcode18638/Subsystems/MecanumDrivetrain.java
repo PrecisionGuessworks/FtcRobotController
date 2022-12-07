@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode18638.Subsystems;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class MecanumDrivetrain {
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
+    //private CRServo backRightMotor;
     final double DRIVE_SPEED_MODIFER = 0.75;
     Telemetry telemetry;
 
