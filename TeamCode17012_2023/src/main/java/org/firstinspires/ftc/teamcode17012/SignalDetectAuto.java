@@ -37,35 +37,38 @@ public class SignalDetectAuto extends LinearOpMode {
 
         while (!isStarted() && !isStopRequested()) {
             spottedTag = camera.getCurrentTag();
+            telemetry.addData("tag", camera.getCurrentTag());
         }
         // TODO: Create code to search further if no tag was seen during the init phase
 
         // Perform drive behavior based on tag seen during init period
         if (spottedTag == ZONE_1_TAG) {
+            telemetry.addLine("ZONE_1_TAG");
             drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
             utilities.delay( 3500);
             drivetrain.stopDriving();
             drivetrain.mecanumDrive_Cartesian(-0.75, 0.0, 0.0);
             utilities.delay( 2500);
         } else if (spottedTag == ZONE_2_TAG) {
+            telemetry.addLine( "ZONE_2_TAG");
             drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
             utilities.delay( 3500);
             drivetrain.stopDriving();
         } else if (spottedTag == ZONE_3_TAG) {
+            telemetry.addLine("ZONE_3_TAG");
             drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
             utilities.delay( 3500);
             drivetrain.mecanumDrive_Cartesian(0.75, 0.0, 0.0);
             utilities.delay( 2500);
             drivetrain.stopDriving();
         } else {
+            telemetry.addLine("No tag found");
             //default (Park???)
         }
+        telemetry.update();
 
 
-        //Drive Forward for 0.5 seconds
-        drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-        utilities.delay( 2750);
-        drivetrain.stopDriving();
+
     }
         //x positive=right, y positive=back, rotation positive=right
     public void getTelemetry() {
