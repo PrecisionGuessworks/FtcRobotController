@@ -73,8 +73,13 @@ public class MecanumDrivetrain {
 
     public double deadband(double x) {
         //TODO: if x is greater than 0.1 or x is less than -0.1, return x otherwise return 0.0
-
-        return x;
+        if (x>0.1){
+            return x;
+        } else if (x<-0.1){
+            return x;
+        } else {
+            return 0;
+        }
     }   // deadband
 
 //    public void mecanumFieldOrientated(double x, double y, double rotation) {
