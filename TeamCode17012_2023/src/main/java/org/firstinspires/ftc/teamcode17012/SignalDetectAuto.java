@@ -38,28 +38,41 @@ public class SignalDetectAuto extends LinearOpMode {
         while (!isStarted() && !isStopRequested()) {
             spottedTag = camera.getCurrentTag();
             telemetry.addData("tag", camera.getCurrentTag());
+            if (spottedTag == ZONE_1_TAG) {
+                telemetry.addLine("\nZone 1 spotted\n\tMove expected: Forward, left.");
+            } else if (spottedTag == ZONE_2_TAG) {
+                telemetry.addLine("\nZone 2 spotted\n\tMove expected: Forward.");
+            } else if (spottedTag == ZONE_3_TAG) {
+                telemetry.addLine("\nZone 3 spotted\n\tMove expected: Forward, right.");
+            } else {
+                telemetry.addLine("\nNo zone spotted\n\tMove expected: Park.");
+            }
+            telemetry.update();
         }
         // TODO: Create code to search further if no tag was seen during the init phase
 
         // Perform drive behavior based on tag seen during init period
         if (spottedTag == ZONE_1_TAG) {
             telemetry.addLine("ZONE_1_TAG");
+            telemetry.update();
             drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-            utilities.delay( 3500);
+            utilities.delay( 3250);
             drivetrain.stopDriving();
-            drivetrain.mecanumDrive_Cartesian(-0.75, 0.0, 0.0);
-            utilities.delay( 2500);
+            drivetrain.mecanumDrive_Cartesian(-.80, 0.0, 0.0);
+            utilities.delay( 3250);
         } else if (spottedTag == ZONE_2_TAG) {
             telemetry.addLine( "ZONE_2_TAG");
+            telemetry.update();
             drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-            utilities.delay( 3500);
+            utilities.delay( 3750);
             drivetrain.stopDriving();
         } else if (spottedTag == ZONE_3_TAG) {
             telemetry.addLine("ZONE_3_TAG");
+            telemetry.update();
             drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-            utilities.delay( 3500);
-            drivetrain.mecanumDrive_Cartesian(0.75, 0.0, 0.0);
-            utilities.delay( 2500);
+            utilities.delay( 3250);
+            drivetrain.mecanumDrive_Cartesian(0.8, 0.0, 0.0);
+            utilities.delay( 3250);
             drivetrain.stopDriving();
         } else {
             telemetry.addLine("No tag found");
