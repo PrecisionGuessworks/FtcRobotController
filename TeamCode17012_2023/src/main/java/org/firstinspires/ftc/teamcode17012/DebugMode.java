@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode17012.Subsystems.NavX;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 @TeleOp(name="Debug Mode", group="Mecanum")
-//@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
+@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
 public class DebugMode extends OpMode {
