@@ -4,16 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
 import org.firstinspires.ftc.teamcode17012.Subsystems.Camera;
 import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 
 //////////////////////////////////////////////////////////////////////////////////////////
-@Autonomous(name="Left Park Signal Detect", group="Mec")
+@Autonomous(name="Right Park Signal Detect", group="Mec")
 //@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
-public class SignalDetectAuto extends LinearOpMode {
+public class RightPark_SignalDetectAuto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     MecanumDrivetrain drivetrain;
     BotUtilities utilities;
@@ -79,7 +80,7 @@ public class SignalDetectAuto extends LinearOpMode {
                 drivetrain.stopDriving();
             } else {
                 telemetry.addLine("No tag found");
-                drivetrain.mecanumDrive_Cartesian(-0.8, 0.0, 0.0);
+                drivetrain.mecanumDrive_Cartesian(0.8, 0.0, 0.0);
                 utilities.delay(constants.PARK_TIME);
             }
             telemetry.update();
