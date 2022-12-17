@@ -51,34 +51,40 @@ public class SignalDetectAuto extends LinearOpMode {
         }
         // TODO: Create code to search further if no tag was seen during the init phase
 
-        // Perform drive behavior based on tag seen during init period
-        if (spottedTag == ZONE_1_TAG) {
-            telemetry.addLine("ZONE_1_TAG");
+        while (!isStopRequested()){
+            // Perform drive behavior based on tag seen during init period
+            if (spottedTag == ZONE_1_TAG) {
+                telemetry.addLine("ZONE_1_TAG");
+                telemetry.update();
+                drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
+                utilities.delay( 3250);
+                drivetrain.stopDriving();
+                drivetrain.mecanumDrive_Cartesian(-.80, 0.0, 0.0);
+                utilities.delay( 3250);
+            } else if (spottedTag == ZONE_2_TAG) {
+                telemetry.addLine( "ZONE_2_TAG");
+                telemetry.update();
+                drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
+                utilities.delay( 3750);
+                drivetrain.stopDriving();
+            } else if (spottedTag == ZONE_3_TAG) {
+                telemetry.addLine("ZONE_3_TAG");
+                telemetry.update();
+                drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
+                utilities.delay( 3250);
+                drivetrain.mecanumDrive_Cartesian(0.8, 0.0, 0.0);
+                utilities.delay( 3350);
+                drivetrain.stopDriving();
+            } else {
+                telemetry.addLine("No tag found");
+                drivetrain.mecanumDrive_Cartesian(-0.8, 0.0, 0.0);
+                utilities.delay( 3250);
+            }
             telemetry.update();
-            drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-            utilities.delay( 3250);
-            drivetrain.stopDriving();
-            drivetrain.mecanumDrive_Cartesian(-.80, 0.0, 0.0);
-            utilities.delay( 3250);
-        } else if (spottedTag == ZONE_2_TAG) {
-            telemetry.addLine( "ZONE_2_TAG");
-            telemetry.update();
-            drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-            utilities.delay( 3750);
-            drivetrain.stopDriving();
-        } else if (spottedTag == ZONE_3_TAG) {
-            telemetry.addLine("ZONE_3_TAG");
-            telemetry.update();
-            drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-            utilities.delay( 3250);
-            drivetrain.mecanumDrive_Cartesian(0.8, 0.0, 0.0);
-            utilities.delay( 3250);
-            drivetrain.stopDriving();
-        } else {
-            telemetry.addLine("No tag found");
-            //default (Park???)
+            break;
         }
-        telemetry.update();
+
+
 
 
 
