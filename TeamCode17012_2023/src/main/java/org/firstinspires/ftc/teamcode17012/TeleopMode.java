@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
 import org.firstinspires.ftc.teamcode17012.Subsystems.Camera;
+import org.firstinspires.ftc.teamcode17012.Subsystems.Elevator;
+import org.firstinspires.ftc.teamcode17012.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 import org.firstinspires.ftc.teamcode17012.Subsystems.NavX;
 
@@ -21,7 +23,8 @@ public class TeleopMode extends OpMode {
     BotUtilities utilities;
     NavX imu;
     Camera camera;
-
+    Gripper gripper;
+    Elevator elevator;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +34,8 @@ public class TeleopMode extends OpMode {
         drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
         camera = new Camera(this.hardwareMap, this.telemetry);
-
+        gripper = new Gripper(this.hardwareMap, this.telemetry);
+        elevator = new Elevator(this.hardwareMap, this.telemetry);
         // Set up our telemetry dashboard
         getTelemetry();
 
@@ -97,12 +101,23 @@ public class TeleopMode extends OpMode {
 
     public void checkOperatorController(){
         // TODO: Add any controls of operation for the operator
+        elevator.setElevatorPower(gamepad2.left_stick_y);
+        if (gamepad2.triangle){
+            gripper.closeGripper();
+        } else if (gamepad2.cross) {
+            gripper.openGripper();
+        }
     }
 
     public void getTelemetry() {
         // Show the elapsed game time
         telemetry.addData("Run Time: ", runtime.toString());
+        telemetry.addData("elevator", gamepad2.left_stick_y);
 
+
+        // Gripper Positions
+        telemetry.addData("Left Gripper", gripper.getLeftPos());
+        telemetry.addData("Right Gripper", gripper.getRightPos());
         // Telemetry about motion
         //telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), rightRear (%.2f), leftRear (%.2f)", telemValues[0], telemValues[1], telemValues[2], telemValues[3]);
         telemetry.update();

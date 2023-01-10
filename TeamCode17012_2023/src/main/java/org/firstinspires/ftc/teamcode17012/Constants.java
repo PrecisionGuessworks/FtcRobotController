@@ -10,4 +10,7 @@ public class Constants {
     public final int ZONE3_RIGHT_TIME = 2950;
 
     public final int PARK_TIME = 3250;
+
+    // Gripper Positions
+
 }
