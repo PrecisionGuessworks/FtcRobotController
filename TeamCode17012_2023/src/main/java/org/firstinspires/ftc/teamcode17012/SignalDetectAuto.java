@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
 import org.firstinspires.ftc.teamcode17012.Subsystems.Camera;
+import org.firstinspires.ftc.teamcode17012.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -19,6 +20,7 @@ public class SignalDetectAuto extends LinearOpMode {
     BotUtilities utilities;
     Camera camera;
     Constants constants;
+    Gripper gripper;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,6 +31,10 @@ public class SignalDetectAuto extends LinearOpMode {
         utilities = new BotUtilities(this.telemetry);
         camera = new Camera(this.hardwareMap, this.telemetry);
         constants = new Constants();
+        gripper = new Gripper(this.hardwareMap, this.telemetry);
+
+        // Close claw around cone
+        //gripper.closeGripper();
 
         // Tags of interest
         final int ZONE_1_TAG = 10;

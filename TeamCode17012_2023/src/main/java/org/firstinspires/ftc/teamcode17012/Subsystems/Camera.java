@@ -59,12 +59,17 @@ public class Camera {
     }
 
     public int getCurrentTag(){
-        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-        if (currentDetections.size() !=0) {
-            return aprilTagDetectionPipeline.getLatestDetections().get(0).id;
-        } else {
+        try {
+            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+            if (currentDetections.size() !=0) {
+                return aprilTagDetectionPipeline.getLatestDetections().get(0).id;
+            } else {
+                return 0;
+            }
+        } catch (IndexOutOfBoundsException e) {
             return 0;
         }
+
     }
 
 }

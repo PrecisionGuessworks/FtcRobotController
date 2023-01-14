@@ -101,7 +101,12 @@ public class TeleopMode extends OpMode {
 
     public void checkOperatorController(){
         // TODO: Add any controls of operation for the operator
+
+        // Elevator
         elevator.setElevatorPower(gamepad2.left_stick_y);
+        telemetry.addData("left stick", gamepad2.left_stick_y);
+
+        // Gripper
         if (gamepad2.triangle){
             gripper.closeGripper();
         } else if (gamepad2.cross) {
@@ -113,7 +118,7 @@ public class TeleopMode extends OpMode {
         // Show the elapsed game time
         telemetry.addData("Run Time: ", runtime.toString());
         telemetry.addData("elevator", gamepad2.left_stick_y);
-
+        elevator.elevatorTelemetry();
 
         // Gripper Positions
         telemetry.addData("Left Gripper", gripper.getLeftPos());

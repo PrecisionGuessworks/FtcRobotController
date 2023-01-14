@@ -12,22 +12,65 @@ public class Elevator {
     // Temp motor as motor
     private DcMotor liftMotor;
 
-    // TODO: Declare the motor for the elevator. This will be running of a SPARKmini motor contorller. As such, it must be considered a CRServo in the code
-
     public Elevator(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        // TODO: Use hardwareMap.get to setup the elevator motor
-        //liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
+        liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // TODO: Use setDirection to set up the direction of elevator function (Up "Forwards", Down "Backwards")
-        // TODO: Use setZeroPowerBehavior to set motor to brake mode
     }
 
-    // TODO: Write method for running the elevator
-
+    /**
+     * setElevatorPower
+     * @param power
+     * basic elevator control. allows for direct human input if desired
+     */
+    public void setElevatorPower(double power) {
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        power = deadband(power);
+        power *= 0.375;
+        liftMotor.setPower(power);
     }
-    // TODO: Write method for stopping elevator motion
+
+    public double deadband(double x) {
+        if (x>0.1){
+            return x;
+        } else if (x<-0.1){
+            return x;
+        } else {
+            return 0;
+        }
+    }   // deadband
+
+    public void stopElevator() {
+        liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftMotor.setPower(0);
+    }
+
+    public void runElevatorToMaxHeight(){
+        liftMotor.setTargetPosition(1500);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void runElevatorToMediumJunction(){
+        liftMotor.setTargetPosition(1000);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void runElevatorToLowJunction(){
+        liftMotor.setTargetPosition(500);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void runElevatorToHome() {
+        liftMotor.setTargetPosition(0);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void printEelvatorTelemetry(){
+        telemetry.addData("Elevator encoder", liftMotor.getCurrentPosition());
+    }
 
     // TODO: (Long term) Write method to freeze elevator in place (reading encoder and making sure it doesn't slip)
 
+}

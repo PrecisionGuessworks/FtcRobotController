@@ -21,7 +21,9 @@ public class Elevator {
 
         }
 
-
+    public void elevatorTelemetry() {
+        telemetry.addData("lift motor", elevatorServo.getPower());
+    }
 
     // TODO: Write method for running the elevator
     public void setElevatorPower(double power){
