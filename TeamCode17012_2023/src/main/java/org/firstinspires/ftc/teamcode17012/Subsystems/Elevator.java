@@ -28,7 +28,11 @@ public class Elevator {
     // TODO: Write method for running the elevator
     public void setElevatorPower(double power){
         power = deadband(power);
-        power *= 0.375;
+        if (power < 0) {
+            power *= 0.65;
+        } else {
+            power *= 0.375;
+        }
         elevatorServo.setPower(power);
     }
     // TODO: Write method for stopping elevator motion
