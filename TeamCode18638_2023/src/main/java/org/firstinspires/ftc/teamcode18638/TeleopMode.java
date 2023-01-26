@@ -19,8 +19,8 @@ public class TeleopMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     MecanumDrivetrain drivetrain;
     BotUtilities utilities;
-    Gripper gripper;
-    Elevator elevator;
+    //Gripper gripper;
+    //Elevator elevator;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,8 +29,8 @@ public class TeleopMode extends OpMode {
     public void init() {
         drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
-        gripper = new Gripper(this.hardwareMap, this.telemetry);
-        elevator = new Elevator(this.hardwareMap, this.telemetry);
+        //gripper = new Gripper(this.hardwareMap, this.telemetry);
+        //elevator = new Elevator(this.hardwareMap, this.telemetry);
 
         // Set up our telemetry dashboard
         getTelemetry();
@@ -89,11 +89,11 @@ public class TeleopMode extends OpMode {
         drivetrain.mecanumDrive_Cartesian(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
 
         // Gripper Control - If single driver/operator
-        if (gamepad1.left_bumper) {
-            gripper.openClaw();
-        } else if (gamepad1.right_bumper) {
-            gripper.closeClaw();
-        }
+//        if (gamepad1.left_bumper) {
+//            gripper.openClaw();
+//        } else if (gamepad1.right_bumper) {
+//            gripper.closeClaw();
+//        }
 
         // Elevator Control - If single driver/operator
 //        if (gamepad1.right_trigger > 0 && gamepad1.left_trigger > 0) {
@@ -112,32 +112,32 @@ public class TeleopMode extends OpMode {
     }
 
     public void checkOperatorController(){
-        if (gamepad2.triangle){
-            gripper.openClaw();
-            telemetry.addLine("triangle");
-        } else if (gamepad2.cross) {
-            gripper.closeClaw();
-        }
-
-        // Elevator Button Control
-        if (gamepad2.dpad_up) {
-            elevator.runElevatorToMaxHeight();
-            telemetry.addLine("dpadup");
-        } else if (gamepad2.dpad_right) {
-            elevator.runElevatorToMediumJunction();
-        } else if (gamepad2.dpad_left) {
-            elevator.runElevatorToLowJunction();
-        } else if (gamepad2.dpad_down) {
-            elevator.runElevatorToHome();
-        } else {
-            elevator.setElevatorPower(gamepad2.left_stick_y);
-        }
+//        if (gamepad2.triangle){
+//            gripper.openClaw();
+//            telemetry.addLine("triangle");
+//        } else if (gamepad2.cross) {
+//            gripper.closeClaw();
+//        }
+//
+//        // Elevator Button Control
+//        if (gamepad2.dpad_up) {
+//            elevator.runElevatorToMaxHeight();
+//            telemetry.addLine("dpadup");
+//        } else if (gamepad2.dpad_right) {
+//            elevator.runElevatorToMediumJunction();
+//        } else if (gamepad2.dpad_left) {
+//            elevator.runElevatorToLowJunction();
+//        } else if (gamepad2.dpad_down) {
+//            elevator.runElevatorToHome();
+//        } else {
+//            elevator.setElevatorPower(gamepad2.left_stick_y);
+//        }
     }
 
     public void getTelemetry() {
         // Show the elapsed game time
         telemetry.addData("Run Time: ", runtime.toString());
-        elevator.printEelvatorTelemetry();
+        //elevator.printEelvatorTelemetry();
         // Telemetry about motion
         //telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), rightRear (%.2f), leftRear (%.2f)", telemValues[0], telemValues[1], telemValues[2], telemValues[3]);
         telemetry.update();
