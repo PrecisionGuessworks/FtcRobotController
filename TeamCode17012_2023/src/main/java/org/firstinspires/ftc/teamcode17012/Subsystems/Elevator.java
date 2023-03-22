@@ -29,7 +29,7 @@ public class Elevator {
     public void setElevatorPower(double power){
         power = deadband(power);
         if (power < 0) {
-            power *= 0.65;
+            power *= 0.85;
         } else {
             power *= 0.375;
         }
