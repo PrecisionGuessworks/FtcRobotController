@@ -2,24 +2,28 @@
 17012
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcodeultimategoal;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Subsystems.ConveyorSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrivetrainSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.WobbleSubsystem;
+
+import org.firstinspires.ftc.teamcodeultimategoal.Subsystems.ConveyorSubsystem;
+import org.firstinspires.ftc.teamcodeultimategoal.Subsystems.IntakeSubsystem;
+import org.firstinspires.ftc.teamcodeultimategoal.Subsystems.MecanumDrivetrainSubsystem;
+import org.firstinspires.ftc.teamcodeultimategoal.Subsystems.ShooterSubsystem;
+import org.firstinspires.ftc.teamcodeultimategoal.Subsystems.WobbleSubsystem;
+
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////////////////////
-@TeleOp(name="Mec Mode", group="Mecanum")
+@TeleOp(name="Solo Mode", group="Mecanum")
 //@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
-public class MecMode extends OpMode {
+public class MecTestMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     BotUtilities utilities;
     MecanumDrivetrainSubsystem mecdrivetrain;
@@ -43,7 +47,7 @@ public class MecMode extends OpMode {
         getTelemetry();
 
         // Tell the driver that initialization is complete.
-        telemetry.addData("Status", "Initialized    \nDr. Jekyll is ready to play.\n\n:)");
+        telemetry.addData("Status", "Initialized    \nEggCheese 2: Electric Boogaloo is ready to play.\n\n:)");
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -93,16 +97,62 @@ public class MecMode extends OpMode {
 
     public void checkDriverController() {
         mecdrivetrain.mecanumDrive_Cartesian(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-        /*
-        Desired controller functions:
-         - normal mecanum driving with shooter/wobble end of robot as front
-         - ability to press/hold button to make driving in reverse (aka intaking) easier
-         */
+
+        // Solo Driver Mode - Operator Controls
+        // Conveyor
+        if (gamepad1.dpad_up) {
+            conveyor.runConveyorUpShooting();
+        } else if (gamepad1.dpad_down) {
+            conveyor.flushConveyorDown();
+        } else {
+            conveyor.setBrakeMode();
+            conveyor.idle();
+        }
+
+        // Shooter
+        if (gamepad1.left_bumper){
+            shooter.revUp();
+        }else{
+            shooter.setPower(0);
+        }
+
+        // Wooble Arm
+        if (gamepad1.triangle) {
+            wobble.setArmPower(0.5);
+        } else if (gamepad1.cross) {
+            wobble.setArmPower(-0.5);
+        } else {
+            wobble.setArmPower(0);
+        }
+
+        //Wobble Intake
+        if (gamepad1.right_trigger > 0.1){
+            wobble.runIntakeIn();
+        }else if(gamepad1.left_trigger > 0.1){
+            wobble.runIntakeOut();
+        }else{
+            wobble.runIntakeIdle();
+        }
+
+        // Intake
+        if(gamepad2.right_bumper || gamepad1.right_bumper) { //Shooting
+            intake.runIntakeIn(0.8);
+        }else if(gamepad1.circle){ //Intaking but not shooting
+            intake.runIntakeIn(0.8);
+            conveyor.setCoastMode();
+            telemetry.addLine("circle - intake in");
+        }else if(gamepad1.square) { //Outtaking
+            intake.runIntakeOut(0.8);
+            conveyor.setBrakeMode();
+            telemetry.addLine("square - intake out");
+        }else{
+            conveyor.setBrakeMode();
+            intake.idle();
+        }
     }
 
     public void checkOperatorController(){
-
-       /*
+        /*
         Desired controller function:
         - The operator has many tasks that need to be mapped
         - Wobble Control
@@ -114,28 +164,6 @@ public class MecMode extends OpMode {
                 - Servos in
                 - Servos out
                 - probably should be press and hold
-         */
-        //Wobble Control
-        if (gamepad2.right_trigger > 0.1){
-            wobble.runIntakeIn();
-        }else if(gamepad2.left_trigger > 0.1){
-            wobble.runIntakeOut();
-        }else{
-            wobble.runIntakeIdle();
-        }
-
-        if (Math.abs(gamepad2.left_stick_y) > 0.1){
-            wobble.setArmPower(-gamepad2.left_stick_y);
-        }else {
-            wobble.setArmPower(0.0);
-        }
-
-
-
-
-
-
-        /*
         - Intake Control
             - Push button deploy/retract
                 - This action is servo driven, so we can hit specific targets
@@ -145,41 +173,6 @@ public class MecMode extends OpMode {
             - Push button control for intaking
                 - Motors in
                 - Motors out
-        */
-        //Intake Control
-        if(gamepad2.triangle){
-            intake.stowIntakeArms();
-            telemetry.addLine("triangle - stow intake");
-        }else if(gamepad2.cross){
-            intake.deployIntakeArms();
-            telemetry.addLine("cross - deploy intake");
-        }else if(Math.abs(gamepad2.right_stick_y) > 0.1){
-            intake.manualAdjustArms(gamepad2.right_stick_y/50.0);
-        }
-
-        //Hack: Had to put gamepad1 to prevent the motor from switch on and off.
-        //Needs to be fixed with the use of a schedule and commands
-        if(gamepad2.right_bumper || gamepad1.right_bumper) { //Shooting
-            intake.runIntakeIn(0.8);
-        }else if(gamepad2.circle){ //Intaking but not shooting
-            intake.runIntakeIn(0.8);
-            conveyor.setCoastMode();
-            telemetry.addLine("circle - intake in");
-        }else if(gamepad2.square) { //Outtaking
-            intake.runIntakeOut(0.8);
-            conveyor.setBrakeMode();
-            telemetry.addLine("square - intake out");
-        }else{
-            conveyor.setBrakeMode();
-            intake.idle();
-        }
-
-
-
-
-
-
-        /*
         - Conveyor Control
             - Most of the time, the conveyor probably should be tied in with other
              systems, however, it's probably wise to also include manual overrides
@@ -187,25 +180,6 @@ public class MecMode extends OpMode {
                 - D-pad control preferred
                 - up for up
                 - down for down
-         */
-        //Conveyor Control
-        if(gamepad2.right_bumper || gamepad1.right_bumper) { //Shooting
-            conveyor.runConveyorUpShooting();
-        }else if(gamepad2.dpad_up){
-            conveyor.runConveyorUpShooting();
-            telemetry.addLine("dpad conveyor up");
-        }else if(gamepad2.dpad_down){
-            conveyor.flushConveyorDown();
-            telemetry.addLine("dpad conveyor down");
-        }else{
-            conveyor.idle();
-        }
-
-
-
-
-
-        /*
         - Shooter control
             - Push button to start acceleration
                 - Shooter does not get up to speed super fast, operator should be
@@ -216,18 +190,7 @@ public class MecMode extends OpMode {
                 checkable
             - Push button to stop shooter
             - Do we want/need to be able to spin it backwards during a match?
-            (Probably no - Carl)
-            -CHANGE: Button to shoot is a hold to shooter, release to stop
          */
-        //TODO: Finish Shooter Control
-        if (gamepad2.left_bumper){
-            shooter.revUp();
-        }else{
-            shooter.setPower(0);
-        }
-
-
-
     }
 
     public void getTelemetry() {

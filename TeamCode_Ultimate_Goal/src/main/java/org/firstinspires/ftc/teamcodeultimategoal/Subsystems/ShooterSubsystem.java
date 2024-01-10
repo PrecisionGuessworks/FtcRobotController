@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.Subsystems;
+package org.firstinspires.ftc.teamcodeultimategoal.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.BotUtilities;
+import org.firstinspires.ftc.teamcodeultimategoal.BotUtilities;
 
 // THE PEW-PEW SUBSYSTEM
 public class ShooterSubsystem {

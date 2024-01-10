@@ -16,7 +16,7 @@ public class TankDrivetrain {
     OnboardGyro imu;
 
     public TankDrivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
-        // TODO 2: Link these objects to their physcial counterparts on the robot
+        // TODO 2: Link these objects to their physical counterparts on the robot
 
 
         // TODO 3: Set each motor object's default direction

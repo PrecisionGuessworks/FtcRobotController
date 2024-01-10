@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode18638;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode18638.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode18638.Subsystems.BotUtilities;
 import org.firstinspires.ftc.teamcode18638.Subsystems.TankDrivetrain;
+import org.firstinspires.ftc.teamcode18638.Subsystems.Wrist;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -17,6 +20,8 @@ public class TeleopMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     TankDrivetrain drivetrain;
     BotUtilities utilities;
+    Arm arm;
+    Wrist wrist;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -26,7 +31,8 @@ public class TeleopMode extends OpMode {
     public void init() {
         drivetrain = new TankDrivetrain(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
-
+        arm = new Arm(this.hardwareMap, this.telemetry);
+        wrist = new Wrist(this.hardwareMap, this.telemetry);
 
         // Set up our telemetry dashboard
         getTelemetry();
@@ -96,6 +102,70 @@ public class TeleopMode extends OpMode {
         telemetry.addData("Run Time: ", runtime.toString());
         telemetry.update();
     }  // getTelemetry
+
+
+
+    // Arm Control
+    // Code provided by Rev. Somewhat modified.
+    public void armControl(){
+        boolean manualMode = false;
+        double manualArmPower = gamepad1.right_trigger - gamepad1.left_trigger;
+        manualArmPower = arm.deadband(manualArmPower);
+        if (arm.humanControlRequested(manualArmPower)) {
+            if (!manualMode) {
+                arm.setArmPower(0);
+                arm.setRunWithoutEncoderMode();
+                manualMode = true;
+            }
+            arm.setArmPower(manualArmPower);
+        } else {
+            if (manualMode) {
+                arm.setTargetPositionsToCurrent();
+                arm.setArmPower(1.0);
+                arm.setRunToPositionMode();
+                manualMode = false;
+            }
+
+            //preset buttons
+            if (gamepad1.a) {
+                arm.setTargetPositionTo(Constants.ARM_HOME_POSITION);
+                arm.setArmPower(1.0);
+                arm.setRunToPositionMode();
+                wrist.setWristUp();
+            } else if (gamepad1.b) {
+                arm.setTargetPositionTo(Constants.ARM_INTAKE_POSITION);
+                arm.setArmPower(1.0);
+                arm.setRunToPositionMode();
+                wrist.setWristDown();
+            } else if (gamepad1.y) {
+                arm.setTargetPositionTo(Constants.ARM_SCORE_POSITION);
+                arm.setArmPower(1.0);
+                arm.setRunToPositionMode();
+                wrist.setWristUp();
+            }
+        }
+
+        //Re-zero encoder button
+        if (gamepad1.start) {
+            arm.stopAndResetEncoder();
+            arm.setArmPower(0.0);
+            manualMode = false;
+        }
+
+        //Watchdog to shut down motor once the arm reaches the home position
+        if (!manualMode && arm.checksForWatchdog()) {
+            arm.setArmPower(0.0);
+            arm.setRunWithoutEncoderMode();
+        }
+
+        //GRIPPER
+        if (gamepad1.left_bumper || gamepad1.right_bumper) {
+            wrist.openGripper();
+        }
+        else {
+            wrist.closeGripper();
+        }
+    }
 
 }    // The Almighty Curly Brace For Everything
 
