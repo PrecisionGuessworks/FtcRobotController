@@ -10,13 +10,16 @@ import org.firstinspires.ftc.teamcode18638.Constants;
 public class Arm {
 
     // TODO 1: Create armRight and armLeft variables. They are DcMotors.
-
+    private DcMotor rightArm;
+    private DcMotor leftArm;
 
     // Do not edit
     Telemetry telemetry;
 
     public Arm(HardwareMap hardwareMap, Telemetry telemetry) {
         // TODO 2: Link the motor variables to their physical counterparts
+        leftArm = hardwareMap.get(DcMotor.class, "leftArm");
+        rightArm = hardwareMap.get(DcMotor.class, "rightArm");
 
         // TODO 3: Set Motor Directions
 
