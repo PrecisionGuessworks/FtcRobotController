@@ -2,17 +2,16 @@ package org.firstinspires.ftc.teamcode18638.Subsystems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode18638.Constants;
 
-public class Wrist {
+public class Grabber {
     // TODO 1: Wrist mechanism variables here. They are Servos named gripper and wrist
 
     // No edit
     Telemetry telemetry;
 
-    public Wrist(HardwareMap hardwareMap, Telemetry telemetry){
+    public Grabber(HardwareMap hardwareMap, Telemetry telemetry){
         // TODO 2: Hardware Map
 
 

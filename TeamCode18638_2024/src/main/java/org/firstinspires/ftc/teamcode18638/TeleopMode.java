@@ -2,13 +2,12 @@ package org.firstinspires.ftc.teamcode18638;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode18638.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode18638.Subsystems.BotUtilities;
 import org.firstinspires.ftc.teamcode18638.Subsystems.TankDrivetrain;
-import org.firstinspires.ftc.teamcode18638.Subsystems.Wrist;
+import org.firstinspires.ftc.teamcode18638.Subsystems.Grabber;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -21,7 +20,7 @@ public class TeleopMode extends OpMode {
     TankDrivetrain drivetrain;
     BotUtilities utilities;
     Arm arm;
-    Wrist wrist;
+    Grabber grabber;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +31,7 @@ public class TeleopMode extends OpMode {
         drivetrain = new TankDrivetrain(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
         arm = new Arm(this.hardwareMap, this.telemetry);
-        wrist = new Wrist(this.hardwareMap, this.telemetry);
+        grabber = new Grabber(this.hardwareMap, this.telemetry);
 
         // Set up our telemetry dashboard
         getTelemetry();
