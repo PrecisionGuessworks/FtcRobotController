@@ -82,7 +82,7 @@ public class Arm {
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void setTargetPositionTo(double position){
+    public void setTargetPositionTo(int position){
         armLeft.setTargetPosition(position);
         armRight.setTargetPosition(position);
     }
