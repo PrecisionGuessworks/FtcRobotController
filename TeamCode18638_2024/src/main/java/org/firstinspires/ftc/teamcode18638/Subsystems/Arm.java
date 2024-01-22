@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode18638.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -22,13 +23,15 @@ public class Arm {
         rightArm = hardwareMap.get(DcMotor.class, "rightArm");
 
         // TODO 3: Set Motor Directions
+        leftArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // No Edit
         armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // TODO 4: Set Motor Zero Behavior (BRAKE MODE PLEASE)
-
+        leftArm.setZeroPowerBehavior(BRAKE);
+        rightArm.setZeroPowerBehavior(BRAKE);
 
         // No Edit
         armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -39,7 +42,8 @@ public class Arm {
 
 
     // TODO: Create a deadband method (hint, you can copy it from the drivetrain file)
-
+        throttle = deadband(throttle);
+        rotation = deadband(rotation);
 
     public boolean humanControlRequested(double input){
         if (Math.abs(input) > 0.1) {
@@ -63,7 +67,9 @@ public class Arm {
 
 
     // TODO: Finish Set Arm Power Method
-    public void setArmPower(double speed){
+    public void setArmPower(double leftArm, double rightArm){
+        leftArm.setPower(leftArm);
+        rightArm.setPower(rightArm);
 
     }
 

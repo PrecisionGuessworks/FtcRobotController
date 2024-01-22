@@ -68,7 +68,7 @@ public class TankDrivetrain {
         // TODO: Set power to the motors using the setMotorPower method, with leftPower and rightPower as the parameters
 
         // TODO: Uncomment out the line below
-        // double[] motorPowers = {leftPower, rightPower};
+        //double[] motorPowers = {leftPower, rightPower};
         return motorPowers;
     }
 
@@ -86,6 +86,7 @@ public class TankDrivetrain {
 
     // TODO: Complete the stopDriving method between the braces below
     public void stopDriving() {
+        setMotorPower(0,0);
         // Hint: Use your setMotorPower method
     }
 
