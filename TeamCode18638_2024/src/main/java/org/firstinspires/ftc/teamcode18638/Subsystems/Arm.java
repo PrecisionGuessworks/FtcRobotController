@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode18638.Subsystems;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -26,24 +28,28 @@ public class Arm {
         leftArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // No Edit
-        armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // TODO 4: Set Motor Zero Behavior (BRAKE MODE PLEASE)
         leftArm.setZeroPowerBehavior(BRAKE);
         rightArm.setZeroPowerBehavior(BRAKE);
 
         // No Edit
-        armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.telemetry = telemetry;
     }
 
 
-
-    // TODO: Create a deadband method (hint, you can copy it from the drivetrain file)
-        throttle = deadband(throttle);
-        rotation = deadband(rotation);
+    public double deadband(double x) {
+        // if x is greater than 0.1 or x is less than -0.1, return x. Otherwise return 0.0
+        if (Math.abs(x) > 0.1){
+            return x;
+        } else {
+            return 0.0;
+        }
+    }   // deadband
 
     public boolean humanControlRequested(double input){
         if (Math.abs(input) > 0.1) {
@@ -55,50 +61,50 @@ public class Arm {
 
     // Arm Start Behvior
     public void armSetupProcedure(){
-        armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armLeft.setTargetPosition(Constants.ARM_HOME_POSITION);
-        armRight.setTargetPosition(Constants.ARM_HOME_POSITION);
-        armLeft.setPower(1.0);
-        armRight.setPower(1.0);
-        armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftArm.setTargetPosition(Constants.ARM_HOME_POSITION);
+        rightArm.setTargetPosition(Constants.ARM_HOME_POSITION);
+        leftArm.setPower(1.0);
+        rightArm.setPower(1.0);
+        leftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
 
     // TODO: Finish Set Arm Power Method
-    public void setArmPower(double leftArm, double rightArm){
-        leftArm.setPower(leftArm);
-        rightArm.setPower(rightArm);
+    public void setArmPower(double pow){
+        leftArm.setPower(pow);
+        rightArm.setPower(pow);
 
     }
 
     // Arm - Set Encoder Modes
     public void setRunWithoutEncoderMode(){
-        armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     public void setRunToPositionMode(){
-        armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void setTargetPositionsToCurrent(){
-        armLeft.setTargetPosition(armLeft.getCurrentPosition());
-        armRight.setTargetPosition(armRight.getCurrentPosition());
+        leftArm.setTargetPosition(leftArm.getCurrentPosition());
+        rightArm.setTargetPosition(rightArm.getCurrentPosition());
     }
     public void stopAndResetEncoder(){
-        armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void setTargetPositionTo(int position){
-        armLeft.setTargetPosition(position);
-        armRight.setTargetPosition(position);
+        leftArm.setTargetPosition(position);
+        rightArm.setTargetPosition(position);
     }
 
     public boolean checksForWatchdog(){
-        return armLeft.getMode() == DcMotor.RunMode.RUN_TO_POSITION &&
-                armLeft.getTargetPosition() <= Constants.ARM_SHUTDOWN_THRESHOLD &&
-                armLeft.getCurrentPosition() <= Constants.ARM_SHUTDOWN_THRESHOLD;
+        return leftArm.getMode() == DcMotor.RunMode.RUN_TO_POSITION &&
+                leftArm.getTargetPosition() <= Constants.ARM_SHUTDOWN_THRESHOLD &&
+                leftArm.getCurrentPosition() <= Constants.ARM_SHUTDOWN_THRESHOLD;
     }
 }

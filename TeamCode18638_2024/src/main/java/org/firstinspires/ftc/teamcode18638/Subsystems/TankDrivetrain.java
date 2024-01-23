@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode18638.Subsystems;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,9 +17,6 @@ public class TankDrivetrain {
     // TODO 1: Create the motor objects for the drivetrain only
     private DcMotor rightDrive;
     private DcMotor leftDrive;
-
-
-
 
 
     // Do not edit
@@ -68,7 +68,7 @@ public class TankDrivetrain {
         // TODO: Set power to the motors using the setMotorPower method, with leftPower and rightPower as the parameters
 
         // TODO: Uncomment out the line below
-        //double[] motorPowers = {leftPower, rightPower};
+        double[] motorPowers = {leftPower, rightPower};
         return motorPowers;
     }
 

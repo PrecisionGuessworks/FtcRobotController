@@ -88,7 +88,8 @@ public class TeleopMode extends OpMode {
     public void checkDriverController() {
         // TODO: Map button controls for robot motion
         telemetry.addLine("Updating DriverControl");
-
+        drivetrain.arcadeDrive(-gamepad1.left_stick_y, gamepad1.right_stick_x);
+        armControl();
 
     }
 
@@ -130,17 +131,17 @@ public class TeleopMode extends OpMode {
                 arm.setTargetPositionTo(Constants.ARM_HOME_POSITION);
                 arm.setArmPower(1.0);
                 arm.setRunToPositionMode();
-                wrist.setWristUp();
+                grabber.setWristUp();
             } else if (gamepad1.b) {
                 arm.setTargetPositionTo(Constants.ARM_INTAKE_POSITION);
                 arm.setArmPower(1.0);
                 arm.setRunToPositionMode();
-                wrist.setWristDown();
+                grabber.setWristDown();
             } else if (gamepad1.y) {
                 arm.setTargetPositionTo(Constants.ARM_SCORE_POSITION);
                 arm.setArmPower(1.0);
                 arm.setRunToPositionMode();
-                wrist.setWristUp();
+                grabber.setWristUp();
             }
         }
 
@@ -159,10 +160,10 @@ public class TeleopMode extends OpMode {
 
         //GRIPPER
         if (gamepad1.left_bumper || gamepad1.right_bumper) {
-            wrist.openGripper();
+            grabber.openGripper();
         }
         else {
-            wrist.closeGripper();
+            grabber.closeGripper();
         }
     }
 
