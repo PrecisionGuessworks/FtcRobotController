@@ -64,8 +64,11 @@ public class TankDrivetrain {
         leftPower = (throttle + rotation);
         rightPower = (throttle - rotation);
         // TODO: Assign leftPower and rightPower the standardized version of themselves
+        leftPower = standardize(leftPower);
+        rightPower = standardize(rightPower);
 
         // TODO: Set power to the motors using the setMotorPower method, with leftPower and rightPower as the parameters
+        setMotorPower(leftPower, rightPower);
 
         // TODO: Uncomment out the line below
         double[] motorPowers = {leftPower, rightPower};

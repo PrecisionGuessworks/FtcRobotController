@@ -9,8 +9,8 @@ public class Constants {
     public static final double GRIPPER_OPEN_POSITION = 0;
 
     // Wrist Constants
-    public static final double WRIST_STOWED_POSITION = 1.0;
-    public static final double WRIST_DEPLOYED_POSITION = 0.0;
+    public static final double WRIST_STOWED_POSITION = 1;
+    public static final double WRIST_DEPLOYED_POSITION = 0.5;
 
     // Arm Constants
     public static final double ARM_ROTATION_SPEED = 0.75;

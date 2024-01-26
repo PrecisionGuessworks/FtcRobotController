@@ -29,6 +29,12 @@ public class Grabber {
     public void setWristDown(){
         wrist.setPosition(Constants.WRIST_DEPLOYED_POSITION);
     }
+    public double getWristPosition(){
+        return wrist.getPosition();
+    }
+    public double getGripperPosition(){
+        return gripper.getPosition();
+    }
     public void openGripper(){
         gripper.setPosition(Constants.GRIPPER_OPEN_POSITION);
     }

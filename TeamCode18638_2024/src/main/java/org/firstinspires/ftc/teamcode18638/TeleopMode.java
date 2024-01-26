@@ -45,6 +45,11 @@ public class TeleopMode extends OpMode {
     /* Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY */
     @Override
     public void init_loop() {
+        telemetry.addData("Run Time: ", runtime.toString());
+        telemetry.addData("Arm encoder - left", arm.getArmPosition());
+        telemetry.addData("Gripper", grabber.getGripperPosition());
+        telemetry.addData("Wrist", grabber.getWristPosition());
+        telemetry.update();
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +94,19 @@ public class TeleopMode extends OpMode {
         // TODO: Map button controls for robot motion
         telemetry.addLine("Updating DriverControl");
         drivetrain.arcadeDrive(-gamepad1.left_stick_y, gamepad1.right_stick_x);
-        armControl();
+        trueManualArm();
+        //armControl();
+    }
 
+    // True Manual Arm Control - No encoder feedback
+    public void trueManualArm(){
+        if (arm.deadband(gamepad1.left_trigger) > 0) {
+            arm.setArmPower(-gamepad1.left_trigger);
+        } else if (arm.deadband(gamepad1.right_trigger) > 0) {
+            arm.setArmPower(gamepad1.right_trigger);
+        } else {
+            arm.setArmPower(0);
+        }
     }
 
     public void checkOperatorController(){
@@ -100,6 +116,9 @@ public class TeleopMode extends OpMode {
     public void getTelemetry() {
         // Show the elapsed game time
         telemetry.addData("Run Time: ", runtime.toString());
+        telemetry.addData("Arm encoder - left", arm.getArmPosition());
+        telemetry.addData("Gripper", grabber.getGripperPosition());
+        telemetry.addData("Wrist", grabber.getWristPosition());
         telemetry.update();
     }  // getTelemetry
 
@@ -127,17 +146,17 @@ public class TeleopMode extends OpMode {
             }
 
             //preset buttons
-            if (gamepad1.a) {
+            if (gamepad1.triangle) {
                 arm.setTargetPositionTo(Constants.ARM_HOME_POSITION);
                 arm.setArmPower(1.0);
                 arm.setRunToPositionMode();
                 grabber.setWristUp();
-            } else if (gamepad1.b) {
+            } else if (gamepad1.cross) {
                 arm.setTargetPositionTo(Constants.ARM_INTAKE_POSITION);
                 arm.setArmPower(1.0);
                 arm.setRunToPositionMode();
                 grabber.setWristDown();
-            } else if (gamepad1.y) {
+            } else if (gamepad1.square) {
                 arm.setTargetPositionTo(Constants.ARM_SCORE_POSITION);
                 arm.setArmPower(1.0);
                 arm.setRunToPositionMode();

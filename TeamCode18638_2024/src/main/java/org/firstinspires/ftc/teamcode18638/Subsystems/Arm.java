@@ -25,7 +25,7 @@ public class Arm {
         rightArm = hardwareMap.get(DcMotor.class, "rightArm");
 
         // TODO 3: Set Motor Directions
-        leftArm.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // No Edit
         leftArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -74,6 +74,7 @@ public class Arm {
 
     // TODO: Finish Set Arm Power Method
     public void setArmPower(double pow){
+        pow = pow * 0.5;
         leftArm.setPower(pow);
         rightArm.setPower(pow);
 
@@ -100,6 +101,10 @@ public class Arm {
     public void setTargetPositionTo(int position){
         leftArm.setTargetPosition(position);
         rightArm.setTargetPosition(position);
+    }
+
+    public double getArmPosition(){
+        return leftArm.getCurrentPosition();
     }
 
     public boolean checksForWatchdog(){
