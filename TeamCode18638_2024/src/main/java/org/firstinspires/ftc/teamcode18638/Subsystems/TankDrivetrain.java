@@ -30,7 +30,7 @@ public class TankDrivetrain {
 
 
         // TODO 3: Set each motor object's default direction
-        leftDrive.setDirection(REVERSE);
+        rightDrive.setDirection(REVERSE);
 
 
         // TODO 4: Set each motor to function in brake mode

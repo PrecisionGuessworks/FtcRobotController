@@ -107,6 +107,18 @@ public class TeleopMode extends OpMode {
         } else {
             arm.setArmPower(0);
         }
+
+        if(gamepad1.triangle){
+            grabber.closeGripper();
+        } else if (gamepad1.cross) {
+            grabber.openGripper();
+        }
+
+        if (gamepad1.square) {
+            grabber.setWristDown();
+        } else if (gamepad1.circle) {
+            grabber.setWristUp();
+        }
     }
 
     public void checkOperatorController(){
