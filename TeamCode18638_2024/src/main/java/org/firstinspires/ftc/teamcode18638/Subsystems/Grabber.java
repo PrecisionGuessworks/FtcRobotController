@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode18638.Constants;
 public class Grabber {
     // TODO 1: Wrist mechanism variables here. They are Servos named gripper and wrist
     private Servo gripper;
-    private Servo wrist;
+    private CRServo wrist;
 
     // No edit
     Telemetry telemetry;
@@ -18,23 +18,32 @@ public class Grabber {
     public Grabber(HardwareMap hardwareMap, Telemetry telemetry){
         // TODO 2: Hardware Map
         gripper = hardwareMap.get(Servo.class, "gripper");
-        wrist = hardwareMap.get(Servo.class, "wrist");
+        wrist = hardwareMap.get(CRServo.class, "wrist");
         this.telemetry = telemetry;
     }
 
     // TODO: Set wrist positions
-    public void setWristUp(){
-        wrist.setPosition(Constants.WRIST_STOWED_POSITION);
+    public void moveWristUp(){
+        wrist.setPower(1);
     }
-    public void setWristDown(){
-        wrist.setPosition(Constants.WRIST_DEPLOYED_POSITION);
+    public void moveWristDown(){
+        wrist.setPower(-1);
     }
-    public void setWristToAuto(){
-        wrist.setPosition(Constants.WRIST_AUTO_DUMP);
+    public void stopWrist(){
+        wrist.setPower(0);
     }
-    public double getWristPosition(){
-        return wrist.getPosition();
-    }
+//    public void setWristUp(){
+//        wrist.setPosition(Constants.WRIST_STOWED_POSITION);
+//    }
+//    public void setWristDown(){
+//        wrist.setPosition(Constants.WRIST_DEPLOYED_POSITION);
+//    }
+//    public void setWristToAuto(){
+//        wrist.setPosition(Constants.WRIST_AUTO_DUMP);
+//    }
+//    public double getWristPosition(){
+//        return wrist.getPosition();
+//    }
     public double getGripperPosition(){
         return gripper.getPosition();
     }

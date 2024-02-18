@@ -48,7 +48,6 @@ public class TeleopMode extends OpMode {
         telemetry.addData("Run Time: ", runtime.toString());
         telemetry.addData("Arm encoder - left", arm.getArmPosition());
         telemetry.addData("Gripper", grabber.getGripperPosition());
-        telemetry.addData("Wrist", grabber.getWristPosition());
         telemetry.update();
     }
 
@@ -115,9 +114,11 @@ public class TeleopMode extends OpMode {
         }
 
         if (gamepad1.square) {
-            grabber.setWristDown();
+            grabber.moveWristDown();
         } else if (gamepad1.circle) {
-            grabber.setWristUp();
+            grabber.moveWristUp();
+        } else {
+            grabber.stopWrist();
         }
     }
 
@@ -130,7 +131,6 @@ public class TeleopMode extends OpMode {
         telemetry.addData("Run Time: ", runtime.toString());
         telemetry.addData("Arm encoder - left", arm.getArmPosition());
         telemetry.addData("Gripper", grabber.getGripperPosition());
-        telemetry.addData("Wrist", grabber.getWristPosition());
         telemetry.update();
     }  // getTelemetry
 
@@ -138,65 +138,65 @@ public class TeleopMode extends OpMode {
 
     // Arm Control
     // Code provided by Rev. Somewhat modified.
-    public void armControl(){
-        boolean manualMode = false;
-        double manualArmPower = gamepad1.right_trigger - gamepad1.left_trigger;
-        manualArmPower = arm.deadband(manualArmPower);
-        if (arm.humanControlRequested(manualArmPower)) {
-            if (!manualMode) {
-                arm.setArmPower(0);
-                arm.setRunWithoutEncoderMode();
-                manualMode = true;
-            }
-            arm.setArmPower(manualArmPower);
-        } else {
-            if (manualMode) {
-                arm.setTargetPositionsToCurrent();
-                arm.setArmPower(1.0);
-                arm.setRunToPositionMode();
-                manualMode = false;
-            }
-
-            //preset buttons
-            if (gamepad1.triangle) {
-                arm.setTargetPositionTo(Constants.ARM_HOME_POSITION);
-                arm.setArmPower(1.0);
-                arm.setRunToPositionMode();
-                grabber.setWristUp();
-            } else if (gamepad1.cross) {
-                arm.setTargetPositionTo(Constants.ARM_INTAKE_POSITION);
-                arm.setArmPower(1.0);
-                arm.setRunToPositionMode();
-                grabber.setWristDown();
-            } else if (gamepad1.square) {
-                arm.setTargetPositionTo(Constants.ARM_SCORE_POSITION);
-                arm.setArmPower(1.0);
-                arm.setRunToPositionMode();
-                grabber.setWristUp();
-            }
-        }
-
-        //Re-zero encoder button
-        if (gamepad1.start) {
-            arm.stopAndResetEncoder();
-            arm.setArmPower(0.0);
-            manualMode = false;
-        }
-
-        //Watchdog to shut down motor once the arm reaches the home position
-        if (!manualMode && arm.checksForWatchdog()) {
-            arm.setArmPower(0.0);
-            arm.setRunWithoutEncoderMode();
-        }
-
-        //GRIPPER
-        if (gamepad1.left_bumper || gamepad1.right_bumper) {
-            grabber.openGripper();
-        }
-        else {
-            grabber.closeGripper();
-        }
-    }
+//    public void armControl(){
+//        boolean manualMode = false;
+//        double manualArmPower = gamepad1.right_trigger - gamepad1.left_trigger;
+//        manualArmPower = arm.deadband(manualArmPower);
+//        if (arm.humanControlRequested(manualArmPower)) {
+//            if (!manualMode) {
+//                arm.setArmPower(0);
+//                arm.setRunWithoutEncoderMode();
+//                manualMode = true;
+//            }
+//            arm.setArmPower(manualArmPower);
+//        } else {
+//            if (manualMode) {
+//                arm.setTargetPositionsToCurrent();
+//                arm.setArmPower(1.0);
+//                arm.setRunToPositionMode();
+//                manualMode = false;
+//            }
+//
+//            //preset buttons
+//            if (gamepad1.triangle) {
+//                arm.setTargetPositionTo(Constants.ARM_HOME_POSITION);
+//                arm.setArmPower(1.0);
+//                arm.setRunToPositionMode();
+//                grabber.setWristUp();
+//            } else if (gamepad1.cross) {
+//                arm.setTargetPositionTo(Constants.ARM_INTAKE_POSITION);
+//                arm.setArmPower(1.0);
+//                arm.setRunToPositionMode();
+//                grabber.setWristDown();
+//            } else if (gamepad1.square) {
+//                arm.setTargetPositionTo(Constants.ARM_SCORE_POSITION);
+//                arm.setArmPower(1.0);
+//                arm.setRunToPositionMode();
+//                grabber.setWristUp();
+//            }
+//        }
+//
+//        //Re-zero encoder button
+//        if (gamepad1.start) {
+//            arm.stopAndResetEncoder();
+//            arm.setArmPower(0.0);
+//            manualMode = false;
+//        }
+//
+//        //Watchdog to shut down motor once the arm reaches the home position
+//        if (!manualMode && arm.checksForWatchdog()) {
+//            arm.setArmPower(0.0);
+//            arm.setRunWithoutEncoderMode();
+//        }
+//
+//        //GRIPPER
+//        if (gamepad1.left_bumper || gamepad1.right_bumper) {
+//            grabber.openGripper();
+//        }
+//        else {
+//            grabber.closeGripper();
+//        }
+//    }
 
 }    // The Almighty Curly Brace For Everything
 
