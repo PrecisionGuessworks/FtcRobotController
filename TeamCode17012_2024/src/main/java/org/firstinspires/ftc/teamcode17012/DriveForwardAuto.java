@@ -36,11 +36,12 @@ public class DriveForwardAuto extends LinearOpMode {
 
         //Drive Forward for 0.5 seconds
         drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
-        utilities.delay( 2750);
+        utilities.delay( 3750);
         drivetrain.stopDriving();
 
         // Drop the pixel
         scoop.deployPixel();
+        utilities.delay(1000);
     }
         //x positive=right, y positive=back, rotation positive=right
     public void getTelemetry() {
