@@ -5,8 +5,8 @@ public class Constants {
     public static final double DRIVE_SPEED_MODIFIER = 0.85;
 
     // Gripper Constants
-    public static final double GRIPPER_CLOSED_POSITION = 0;
-    public static final double GRIPPER_OPEN_POSITION = 1.0;
+    public static final double GRIPPER_CLOSED_POSITION = 1.0;
+    public static final double GRIPPER_OPEN_POSITION = 0.0;
 
     // Wrist Constants
     public static final double WRIST_STOWED_POSITION = 1;

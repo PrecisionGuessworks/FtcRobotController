@@ -39,11 +39,11 @@ public class DriveForwardAutoMode extends LinearOpMode {
         utilities.delay(1500);
         drivetrain.stopDriving();
 
+        utilities.delay(250);
+
         // Flick wrist forward
-        //grabber.setWristToAuto();
         grabber.moveWristDown();
-        //grabber.setWristDown();
-        utilities.delay(300);
+        utilities.delay(1150);
         grabber.stopWrist();
 
         // Drop pixel
