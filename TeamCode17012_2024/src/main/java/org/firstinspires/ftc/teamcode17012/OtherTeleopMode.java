@@ -12,11 +12,11 @@ import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-@TeleOp(name="Teleop Mode", group="Mecanum")
+@TeleOp(name="test servo Mode", group="Mecanum")
 //@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
-public class TeleopMode extends OpMode {
+public class OtherTeleopMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     //MecanumDrivetrain drivetrain;
     BotUtilities utilities;
