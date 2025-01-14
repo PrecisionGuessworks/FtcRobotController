@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode18638.Subsystems.BotUtilities;
-import org.firstinspires.ftc.teamcode18638.Subsystems.TankDrivetrain;
+import org.firstinspires.ftc.teamcode18638.Subsystems.MecanumDrivetrain;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 @Autonomous(name="DriveForwardAuto", group="Mec")
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode18638.Subsystems.TankDrivetrain;
 
 public class DriveForwardAuto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    TankDrivetrain drivetrain;
+    MecanumDrivetrain drivetrain;
     BotUtilities utilities;
 
 
@@ -23,14 +23,14 @@ public class DriveForwardAuto extends LinearOpMode {
     /* Code to run ONCE when the driver hits INIT */
     @Override
     public void runOpMode() {
-        drivetrain = new TankDrivetrain(this.hardwareMap, this.telemetry);
+        drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
 
         waitForStart();
 
 
         // Drive Forward
-        drivetrain.arcadeDrive(0.75, 0);
+        drivetrain.mecanumDrive_Cartesian(0, 0.85, 0);
         utilities.delay(1250);
         drivetrain.stopDriving();
 

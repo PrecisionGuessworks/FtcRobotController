@@ -4,8 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode18638.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode18638.Subsystems.BotUtilities;
-import org.firstinspires.ftc.teamcode18638.Subsystems.TankDrivetrain;
+import org.firstinspires.ftc.teamcode18638.Subsystems.MecanumDrivetrain;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -15,7 +16,8 @@ import org.firstinspires.ftc.teamcode18638.Subsystems.TankDrivetrain;
 
 public class TeleopMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    TankDrivetrain drivetrain;
+    MecanumDrivetrain drivetrain;
+    Arm arm;
     BotUtilities utilities;
 
 
@@ -24,7 +26,8 @@ public class TeleopMode extends OpMode {
     /* Code to run ONCE when the driver hits INIT */
     @Override
     public void init() {
-        drivetrain = new TankDrivetrain(this.hardwareMap, this.telemetry);
+        drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
+        arm = new Arm(this.hardwareMap, this.telemetry);
         utilities = new BotUtilities(this.telemetry);
 
         // Set up our telemetry dashboard
@@ -85,19 +88,36 @@ public class TeleopMode extends OpMode {
     public void checkDriverController() {
         // TODO: Map button controls for robot motion
         telemetry.addLine("Updating DriverControl");
-        drivetrain.arcadeDrive(-gamepad1.left_stick_y, gamepad1.right_stick_x);
-        //armControl();
+        drivetrain.mecanumDrive_Cartesian(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
     }
 
 
     public void checkOperatorController(){
         // TODO: Map button controls if using a second human robot driver/operator, otherwise, add those to the driver method
+        if(gamepad2.right_bumper){
+            arm.intaking();
+        } else if (gamepad2.left_bumper){
+            arm.outtaking();
+        } else {
+            arm.stopIntake();
+        }
+
+        if(gamepad2.triangle || gamepad2.dpad_up) {
+            arm.openClaw();
+        } else if (gamepad2.cross || gamepad2.dpad_down) {
+            arm.closeClaw();
+        }
+
+        arm.moveShoulder(-gamepad2.left_stick_y);
+
+        arm.moveWrist(-gamepad2.right_stick_y);
+
     }
 
     public void getTelemetry() {
         // Show the elapsed game time
         telemetry.addData("Run Time: ", runtime.toString());
-
+        telemetry.addData("Servo", arm.getServoPosition());
         telemetry.update();
     }  // getTelemetry
 
