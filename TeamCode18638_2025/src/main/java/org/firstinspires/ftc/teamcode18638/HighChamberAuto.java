@@ -8,11 +8,11 @@ import org.firstinspires.ftc.teamcode18638.Subsystems.BotUtilities;
 import org.firstinspires.ftc.teamcode18638.Subsystems.MecanumDrivetrain;
 
 //////////////////////////////////////////////////////////////////////////////////////////
-@Autonomous(name="DriveForwardAuto", group="Mec")
+@Autonomous(name="HighChamberAuto", group="Mec")
 //@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
-public class DriveForwardAuto extends LinearOpMode {
+public class HighChamberAuto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     MecanumDrivetrain drivetrain;
     BotUtilities utilities;
@@ -28,11 +28,15 @@ public class DriveForwardAuto extends LinearOpMode {
 
         waitForStart();
 
+        //Slightly raise arm
 
-        // Drive Forward
+
+        // Drive Forward & raise arm
         drivetrain.mecanumDrive_Cartesian(0, -1, 0);
         utilities.delay(2250);
         drivetrain.stopDriving();
+
+        
 
 
     }
