@@ -1,15 +1,22 @@
 package org.firstinspires.ftc.teamcode17012.Subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.ZYX;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class MecanumDrivetrain {
-    NavX imu;
+    //IntegratingGyroscope gyro;
+    //NavxMicroNavigationSensor imu;
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
     final double DRIVE_SPEED_MODIFER = 0.75;
 
@@ -30,22 +37,21 @@ public class MecanumDrivetrain {
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        imu = new NavX(hardwareMap, telemtry);
+//        imu = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
+//        while (imu.isCalibrating()) {}
+//        gyro = (IntegratingGyroscope) imu;
     }
 
-    public void stopDriving() {
+    public void stopDriving(){
         setMotorPower(0,0,0,0);
     }
-
-    public void setMotorPower(double FL, double BL, double FR, double BR) {
-        frontLeftMotor.setPower(FL);
-        backLeftMotor.setPower(BL);
-        frontRightMotor.setPower(FR);
-        backRightMotor.setPower(BR);
-        // See we take the frontLeftMotor and use the setPower method to set the power to the
-        // value of the FL variables. Do this for the all the other motors
-
-    }
+    public double deadband(double x) {
+        if (Math.abs(x) > 0.1) {
+            return x;
+        } else {
+            return 0;
+        }
+    }   // deadband
 
     private double[] normalize(double[] wheelSpeeds) {
         double maxMagnitude = Math.abs(wheelSpeeds[0]);
@@ -67,45 +73,54 @@ public class MecanumDrivetrain {
         return wheelSpeeds;
     }   //normalize
 
-    public double deadband(double x) {
-        //TODO: if x is greater than 0.1 or x is less than -0.1, return x otherwise return 0.0
-        if (x > 0.1) {
-            return x;
-        } else if (x < -0.1) {
-            return x;
-        } else {
-            return 0;
-        }
-    }   // deadband
+    public void setMotorPower(double FL, double BL, double FR, double BR) {
+        frontLeftMotor.setPower(FL);
+        backLeftMotor.setPower(BL);
+        frontRightMotor.setPower(FR);
+        backRightMotor.setPower(BR);
+        // See we take the frontLeftMotor and use the setPower method to set the power to the
+        // value of the FL variables. Do this for the all the other motors
 
-    public void mecanumFieldOrientated(double x, double y, double rotation) {
-        final double PI = Math.PI;
-        double gyroHeading = imu.getHeadingInRad(); // TODO: Create IMU class and this method
-//        double temp = y * cos(gyroHeading) + x * sin(gyroHeading);
-//        x = -y * sin(gyroHeading) + x * cos(gyroHeading);
-//        y = temp;
-//
-//        double wheelSpeeds[] = new double[4];
-//
-//        mecanumDrive_Cartesian(x, y, rotation);
-
-
-
-        // From gmzero:
-        // Rotate the movement direction counter to the bot's rotation
-        double rotX = x * Math.cos(-gyroHeading) - y * Math.sin(-gyroHeading);
-        double rotY = x * Math.sin(-gyroHeading) + y * Math.cos(-gyroHeading);
-
-        rotX = rotX * 1.1;  // Counteract imperfect strafing
-
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rotation), 1);
-        double frontLeftPower = (rotY + rotX + rotation) / denominator;
-        double backLeftPower = (rotY - rotX + rotation) / denominator;
-        double frontRightPower = (rotY - rotX - rotation) / denominator;
-        double backRightPower = (rotY + rotX - rotation) / denominator;
-
-        setMotorPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
     }
+
+    public void drive(double x, double y, double h) {
+        double wheelSpeeds[] = new double[4];
+
+        // Deadband prevents controller movement for very small motions to prevent unintentional movements
+        x = deadband(x);
+        y = deadband(y);
+        h = deadband(h);
+
+        //Cubic funtion for controls
+        x = x * x * x;
+        y = y * y * y;
+        h = Math.pow(h, 3);
+
+        //Mecanum Math
+        wheelSpeeds[0] = x - y + h;
+        wheelSpeeds[1] = x + y - h;
+        wheelSpeeds[2] = x + y + h;
+        wheelSpeeds[3] = x - y - h;
+
+        // Remaping wheel speeds to be 0 to 1.
+        wheelSpeeds = normalize(wheelSpeeds);
+
+        //Set power to motors. Vroom vroom.
+        setMotorPower(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
+    }
+
+//    public double getHeading() {
+//        Orientation angles = gyro.getAngularOrientation(AxesReference.INTRINSIC, ZYX, AngleUnit.RADIANS);
+//        return angles.firstAngle;
+//    }
+//    public void driveFieldCentric(double x, double y, double h) {
+//        double rotX = x * Math.cos(getHeading()) - y * Math.sin(getHeading());
+//        double rotY = x * Math.sin(getHeading()) + y * Math.cos(getHeading());
+//
+//        rotX = rotX * 1.1;  // Counteract imperfect strafing
+//
+//        drive(rotX, rotY, h);
+//    }
 
     public void mecanumDrive_Cartesian(double x, double y, double rotation) {
         double wheelSpeeds[] = new double[4];
@@ -140,7 +155,7 @@ public class MecanumDrivetrain {
         //Set power to motors. Vroom vroom.
         setMotorPower(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
 
-    }   //mecanumDrive_Cartesian
+    }
 
 }
 

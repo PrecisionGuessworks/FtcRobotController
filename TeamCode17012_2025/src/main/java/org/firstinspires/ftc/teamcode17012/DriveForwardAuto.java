@@ -30,7 +30,7 @@ public class DriveForwardAuto extends LinearOpMode {
 
 
         //Drive Forward for 0.5 seconds
-        drivetrain.mecanumDrive_Cartesian(0.0, -0.75, 0.0);
+        drivetrain.drive(0.0, -0.75, 0.0);
         utilities.delay( 2750);
         drivetrain.stopDriving();
     }
