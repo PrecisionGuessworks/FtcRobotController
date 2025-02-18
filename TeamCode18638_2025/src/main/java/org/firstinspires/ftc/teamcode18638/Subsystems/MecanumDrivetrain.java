@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class MecanumDrivetrain {
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
-    final double DRIVE_SPEED_MODIFER = 0.75;
+    final double DRIVE_SPEED_MODIFIER = 0.75;
 
 
     public MecanumDrivetrain(HardwareMap hardwareMap, Telemetry telemtry) {
@@ -106,9 +106,9 @@ public class MecanumDrivetrain {
         double wheelSpeeds[] = new double[4];
 
         // Slow it down
-        x *= DRIVE_SPEED_MODIFER;
-        y *= DRIVE_SPEED_MODIFER;
-        rotation *= DRIVE_SPEED_MODIFER;
+        x *= DRIVE_SPEED_MODIFIER;
+        y *= DRIVE_SPEED_MODIFIER;
+        rotation *= DRIVE_SPEED_MODIFIER;
 
 
         // Deadband prevents controller movement for very small motions to prevent unintentional movements

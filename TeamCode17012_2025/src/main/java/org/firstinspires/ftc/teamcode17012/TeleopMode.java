@@ -1,38 +1,44 @@
 package org.firstinspires.ftc.teamcode17012;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode17012.Subsystems.BotUtilities;
+import org.firstinspires.ftc.teamcode17012.Subsystems.Climber;
+import org.firstinspires.ftc.teamcode17012.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode17012.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 //import org.firstinspires.ftc.teamcode17012.Subsystems.Camera;
 //import org.firstinspires.ftc.teamcode17012.Subsystems.MecanumDrivetrain;
 //import org.firstinspires.ftc.teamcode17012.Subsystems.NavX;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-@TeleOp(name="Teleop Mode", group="Mecanum")
+@TeleOp(name="This Teleop Mode", group="Mecanum")
 //@Disabled        // Comment/Uncomment this line as needed to show/hide this opmode
 //////////////////////////////////////////////////////////////////////////////////////////
 
 public class TeleopMode extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    //MecanumDrivetrain drivetrain;
-    BotUtilities utilities;
-    private CRServo intakeLeft, intakeRight;
-    //NavX imu;
+    Lift lift;
+    MecanumDrivetrain drivetrain;
+    Climber climber;
+    Intake intake;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
     /* Code to run ONCE when the driver hits INIT */
     @Override
     public void init() {
-        //drivetrain = new MecanumDrivetrain(this.hardwareMap, this.telemetry);
-        utilities = new BotUtilities(this.telemetry);
 
-        intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
-        intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
+        lift = new Lift(hardwareMap);
+        drivetrain = new MecanumDrivetrain(hardwareMap, telemetry);
+        climber = new Climber(hardwareMap);
+        intake = new Intake(hardwareMap);
 
         // Set up our telemetry dashboard
         getTelemetry();
@@ -63,8 +69,48 @@ public class TeleopMode extends OpMode {
     /* Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP */
     @Override
     public void loop() {
-        checkDriverController();
-        checkOperatorController();
+        drivetrain.mecanumDrive_Cartesian(
+                gamepad1.left_stick_x,
+                gamepad1.left_stick_y,
+                gamepad1.right_stick_x);
+
+
+        // Lift
+        lift.setLiftPower(-gamepad2.left_stick_y);
+
+        // Intake
+        if (gamepad2.circle) {
+            intake.extendIntake();
+        }
+        if (gamepad2.square) {
+            intake.retractIntake();
+        }
+
+        // Virtual 4 Bar
+        if (gamepad2.triangle) {
+            intake.deployV4Bar();
+        }
+        if (gamepad2.cross) {
+            intake.retractV4Bar();
+        }
+
+        // Boat Hook - Extension
+        if (gamepad1.dpad_down){
+            climber.retractBoatHook();
+        } else if (gamepad1.dpad_up) {
+            climber.extendBoatHook();
+        } else {
+            climber.stopBoatHook();
+        }
+
+        // Boat Hook - Rotation
+        if (gamepad1.dpad_left){
+            climber.pivotBoatHookDown();
+        } else if (gamepad1.dpad_right) {
+            climber.pivotBoatHookUp();
+        } else {
+            climber.stopBoatHookPivot();
+        }
 
         // Call Telemetry
         getTelemetry();
@@ -88,18 +134,7 @@ public class TeleopMode extends OpMode {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     public void checkDriverController() {
-        telemetry.addLine("Updating DriverControl");
 
-        // Drive Control
-        //drivetrain.mecanumDrive_Cartesian(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
-
-        if(gamepad1.triangle) {
-            intakeLeft.setPower(1);
-            intakeRight.setPower(-1);
-        } else {
-            intakeRight.setPower(0);
-            intakeLeft.setPower(0);
-        }
 
         // TODO: Add any controls of operation for the driver
     }
