@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Climber {
     public CRServo boathookPivot;
-    public Servo hangFlipLeft;
-    public Servo hangFlipRight;
+    public CRServo hangFlipLeft;
+    public CRServo hangFlipRight;
     public DcMotorEx boathookExtension;
 
 
@@ -19,8 +19,8 @@ public class Climber {
         boathookExtension = hardwareMap.get(DcMotorEx.class, "bhExt");
         //boathookExtension.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        hangFlipLeft = hardwareMap.get(Servo.class, "hangFlipLeft");
-        hangFlipRight = hardwareMap.get(Servo.class, "hangFlipRight");
+        hangFlipLeft = hardwareMap.get(CRServo.class, "hangFlipLeft");
+        hangFlipRight = hardwareMap.get(CRServo.class, "hangFlipRight");
     }
 
     public void extendBoatHook(){
@@ -44,11 +44,17 @@ public class Climber {
     }
 
     public void deployHangFlippers(){
-        hangFlipLeft.setPosition(1);
-        hangFlipRight.setPosition(1);
+        hangFlipLeft.setPower(-0.4);
+        hangFlipRight.setPower(0.4);
     }
     public void retractHangFlippers(){
-        hangFlipLeft.setPosition(-1);
-        hangFlipRight.setPosition(1);
+        hangFlipLeft.setPower(0.4);
+        hangFlipRight.setPower(-0.4);
+
+    }
+
+    public void stopHangFlippers() {
+        hangFlipLeft.setPower(0);
+        hangFlipRight.setPower(0);
     }
 }

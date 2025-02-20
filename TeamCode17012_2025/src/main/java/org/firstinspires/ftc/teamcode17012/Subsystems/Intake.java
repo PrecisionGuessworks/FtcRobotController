@@ -1,22 +1,25 @@
 package org.firstinspires.ftc.teamcode17012.Subsystems;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake {
-    public Servo intake4barLeft, intake4barRight;
-    public DcMotorEx intakeExtension;
+    private CRServo intake4barLeft, intake4barRight;
+    private DcMotorEx intakeExtension;
 
-    public Servo intakeTurret;
-    public Servo intakePincher;
+    private Servo intakeTurret;
+    private Servo intakePincher;
+
+    private final double V4BAR_ROTATION_SPEED = 0.125;
 
     public Intake(HardwareMap hardwareMap){
         intakeExtension = hardwareMap.get(DcMotorEx.class, "intakeExt");
-        //intakeExtension.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeExtension.setDirection(DcMotorEx.Direction.REVERSE);
 
-        intake4barRight = hardwareMap.get(Servo.class, "intake4barLeft");
-        intake4barLeft = hardwareMap.get(Servo.class, "intake4barRight");
+        intake4barRight = hardwareMap.get(CRServo.class, "intake4barLeft");
+        intake4barLeft = hardwareMap.get(CRServo.class, "intake4barRight");
 
         intakeTurret = hardwareMap.get(Servo.class, "intakeTurret");
         intakePincher = hardwareMap.get(Servo.class, "intakeGrab");
@@ -24,7 +27,7 @@ public class Intake {
 
     // Pincher
     public void closePincher(){
-        intakePincher.setPosition(.4);
+        intakePincher.setPosition(1);
     }
     public void openPincher(){
         intakePincher.setPosition(0);
@@ -32,10 +35,10 @@ public class Intake {
 
     // Turret
     public void rotateClawLong(){
-        intakeTurret.setPosition(0.4);
+        intakeTurret.setPosition(1);
     }
     public void rotateClawWide(){
-        intakeTurret.setPosition(0);
+        intakeTurret.setPosition(.5);
     }
 
     // Extension
@@ -49,24 +52,39 @@ public class Intake {
         intakeExtension.setPower(0);
     }
 
-    // Virtual 4 Bar
-    public void deployV4Bar(){
-        intake4barLeft.setPosition(-0.3);
-        intake4barRight.setPosition(0.3);
+    // Virtual 4 Bar - Servo Mode
+//    public void deployV4Bar(){
+//        intake4barLeft.setPosition(0.45);
+//        intake4barRight.setPosition(0.46);
+//    }
+//    public void retractV4Bar(){
+//        rotateClawWide();
+//        intake4barLeft.setPosition(0.0);
+//        intake4barRight.setPosition(.75);
+//    }
+//    public void manualV4Bar(boolean forward){
+//        double currentPositionL = intake4barLeft.getPosition();
+//        double currentPositionR = intake4barRight.getPosition();
+//        if (forward) {
+//            intake4barLeft.setPosition(currentPositionL + 0.005);
+//            intake4barRight.setPosition(currentPositionR - 0.005);
+//        } else {
+//            intake4barLeft.setPosition(currentPositionL - 0.005);
+//            intake4barRight.setPosition(currentPositionR + 0.005);
+//        }
+//    }
+
+    // Virtual 4 Bar - Continuous Mode
+    public void rotate4BarForward(){
+        intake4barRight.setPower(-V4BAR_ROTATION_SPEED);
+        intake4barLeft.setPower(V4BAR_ROTATION_SPEED);
     }
-    public void retractV4Bar(){
-        intake4barLeft.setPosition(0.3);
-        intake4barRight.setPosition(-0.3);
+    public void rotate4BarBackwards(){
+        intake4barRight.setPower(V4BAR_ROTATION_SPEED);
+        intake4barLeft.setPower(-V4BAR_ROTATION_SPEED);
     }
-    public void manualV4Bar(boolean forward){
-        double currentPositionL = intake4barLeft.getPosition();
-        double currentPositionR = intake4barRight.getPosition();
-        if (forward) {
-            intake4barLeft.setPosition(currentPositionL + 0.05);
-            intake4barRight.setPosition(currentPositionR + 0.05);
-        } else {
-            intake4barLeft.setPosition(currentPositionL - 0.05);
-            intake4barRight.setPosition(currentPositionR - 0.05);
-        }
+    public void stop4Bar(){
+        intake4barLeft.setPower(0);
+        intake4barRight.setPower(0);
     }
 }

@@ -79,19 +79,53 @@ public class TeleopMode extends OpMode {
         lift.setLiftPower(-gamepad2.left_stick_y);
 
         // Intake
-        if (gamepad2.circle) {
+        if (gamepad2.dpad_up) {
             intake.extendIntake();
-        }
-        if (gamepad2.square) {
+        } else if (gamepad2.dpad_down) {
             intake.retractIntake();
+        } else {
+            intake.stopIntakeExtension();
         }
 
-        // Virtual 4 Bar
-        if (gamepad2.triangle) {
-            intake.deployV4Bar();
+//        // Virtual 4 Bar
+//        if (gamepad2.triangle) {
+//            //intake.deployV4Bar();
+//            intake.rotate4BarForward();
+//        } else if (gamepad2.cross) {
+//            //intake.retractV4Bar();
+//            intake.rotate4BarBackwards();
+//        } else {
+//            intake.stop4Bar();
+//        }
+
+        // Claw
+        if (gamepad2.square) {
+            intake.rotateClawLong();
+        } else if (gamepad2.circle) {
+            intake.rotateClawWide();
         }
-        if (gamepad2.cross) {
-            intake.retractV4Bar();
+
+        // Pincher
+        if (gamepad2.left_bumper) {
+            intake.closePincher();
+        } else if (gamepad2.right_bumper) {
+            intake.openPincher();
+        }
+
+        // Specimen Grabber
+        if(gamepad1.left_bumper){
+            lift.closeSpecimenGrabber();
+        } else if (gamepad1.right_bumper) {
+            lift.openSpecimenGrabber();
+        }
+
+        // Initial Climb Hooks - Deployment
+        if(gamepad2.dpad_right) {
+            climber.deployHangFlippers();
+        } else if (gamepad2.dpad_left) {
+            climber.retractHangFlippers();
+        } else {
+            climber.stopHangFlippers();
         }
 
         // Boat Hook - Extension
@@ -110,6 +144,20 @@ public class TeleopMode extends OpMode {
             climber.pivotBoatHookUp();
         } else {
             climber.stopBoatHookPivot();
+        }
+
+        // Manual 4 Bar
+//        if (gamepad2.right_stick_x > 0.1) {
+//            intake.manualV4Bar(true);
+//        } else if (gamepad2.right_stick_x < -0.1) {
+//            intake.manualV4Bar(false);
+//        }
+        if (-gamepad2.right_stick_y > 0.1) {
+            intake.rotate4BarForward();
+        } else if (-gamepad2.right_stick_y < -0.1) {
+            intake.rotate4BarBackwards();
+        } else {
+            intake.stop4Bar();
         }
 
         // Call Telemetry

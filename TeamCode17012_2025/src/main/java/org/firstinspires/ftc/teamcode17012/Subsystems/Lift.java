@@ -28,4 +28,13 @@ public class Lift {
     public String getPower(){
         return liftLeft.getPower() + " " + liftRight.getPower();
     }
+
+    public void openSpecimenGrabber(){
+        specimenGrabberLeft.setPosition(0.28);
+        specimenGrabberRight.setPosition(0.2);
+    }
+    public void closeSpecimenGrabber(){
+        specimenGrabberLeft.setPosition(0.13);
+        specimenGrabberRight.setPosition(0.45);
+    }
 }
