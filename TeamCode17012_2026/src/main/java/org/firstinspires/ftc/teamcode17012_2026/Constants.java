@@ -47,6 +47,15 @@ public class Constants {
         public static final String PINPOINT = "pinpoint"; // GoBilda Pinpoint Odometry Computer
     }
 
+    public static class CatapultHardware {
+        public static final String CATAPULT_MOTOR_1 = "catapult1";
+        public static final String CATAPULT_MOTOR_2 = "catapult2";
+    }
+
+    public static class FootHardware {
+        public static final String FOOT_MOTOR = "foot";
+    }
+
     // ==================== DRIVETRAIN CONSTANTS ====================
 
     public static class DrivetrainConstants {
@@ -175,6 +184,23 @@ public class Constants {
         public static final double RAISE_SPEED = 1.0;
         public static final double LOWER_SPEED = -1.0;
         public static final double STOP_SPEED = 0.5;
+    }
+
+    // ==================== CATAPULT CONSTANTS ====================
+
+    public static class CatapultConstants {
+        // Catapult motor power settings
+        public static final double UP_POWER = -1.0;    // Power to pivot up (launch position)
+        public static final double DOWN_POWER = 1.0;   // Power to pivot down (stowed position)
+        public static final double HOLD_POWER = 0.2;   // Feed-forward power to hold position
+    }
+
+    // ==================== FOOT CONSTANTS ====================
+
+    public static class FootConstants {
+        // Foot motor power settings
+        public static final double UP_POWER = 1.0;     // Power to raise foot (stowed)
+        public static final double DOWN_POWER = -0.85; // Power to lower foot (deployed)
     }
 
     // ==================== AUTONOMOUS CONSTANTS ====================

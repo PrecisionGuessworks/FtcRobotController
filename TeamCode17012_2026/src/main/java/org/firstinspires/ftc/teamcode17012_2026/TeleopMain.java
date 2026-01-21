@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode17012_2026.Constants.ArtifactColor;
+import org.firstinspires.ftc.teamcode17012_2026.Subsystems.CatapultSubsystem;
 import org.firstinspires.ftc.teamcode17012_2026.Subsystems.ColorSensorSubsystem;
+import org.firstinspires.ftc.teamcode17012_2026.Subsystems.FootSubsystem;
 import org.firstinspires.ftc.teamcode17012_2026.Subsystems.HopperSubsystem;
 import org.firstinspires.ftc.teamcode17012_2026.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode17012_2026.Subsystems.LimelightSubsystem;
@@ -22,7 +24,10 @@ import org.firstinspires.ftc.teamcode17012_2026.Subsystems.ShooterSubsystem;
  * - Left Stick: Strafe (X/Y)
  * - Right Stick X: Rotate
  * - Square Button: Reset heading (field-centric)
- * - D-Pad Up/Down/Left/Right: (reserved for future use)
+ * - Cross (A): Lower foot (deploy for stability)
+ * - Circle (B): Raise foot (stow)
+ * - Right Bumper: Pivot catapult up
+ * - Right Trigger: Pivot catapult down
  *
  * OPERATOR (Gamepad2) Controls:
  * - Triangle: Start Intake
@@ -46,6 +51,8 @@ public class TeleopMain extends OpMode {
     private LimelightSubsystem limelight;
     private PinpointOdometry odometry;
     private ScoringSequence scoringSequence;
+    private CatapultSubsystem catapult;
+    private FootSubsystem foot;
 
     // State tracking
     private ElapsedTime runtime = new ElapsedTime();
@@ -74,10 +81,13 @@ public class TeleopMain extends OpMode {
             limelight = new LimelightSubsystem(hardwareMap, telemetry);
             odometry = new PinpointOdometry(hardwareMap, telemetry);
             scoringSequence = new ScoringSequence(shooter, hopper, limelight, telemetry);
+            catapult = new CatapultSubsystem(hardwareMap, telemetry);
+            foot = new FootSubsystem(hardwareMap, telemetry);
 
             telemetry.addData("Status", "Initialized - Ready to start!");
             telemetry.addData("", "");
             telemetry.addData("Driver", "Left stick=strafe, Right stick=rotate, Square=reset heading");
+            telemetry.addData("Driver", "Cross=foot down, Circle=foot up, RB=catapult up, RT=catapult down");
             telemetry.addData("Operator", "Triangle=intake, Cross=outtake, Square=auto-launch");
             telemetry.addData("", "LB/RB=manual shoot Green/Purple");
 
@@ -139,6 +149,40 @@ public class TeleopMain extends OpMode {
             telemetry.addData("Heading", "RESET");
         }
         lastSquareButton = gamepad1.square;
+
+        // === FOOT CONTROLS ===
+        // Cross (A) = lower foot, Circle (B) = raise foot
+        // When both pressed, prioritize raising (safer default)
+        boolean footDownButton = gamepad1.cross;
+        boolean footUpButton = gamepad1.circle;
+        if (footDownButton && footUpButton) {
+            footDownButton = false; // Prioritize up when both pressed
+        }
+
+        if (footDownButton) {
+            foot.lower();
+        } else if (footUpButton) {
+            foot.raise();
+        } else {
+            foot.stop();
+        }
+
+        // === CATAPULT CONTROLS ===
+        // Right bumper = pivot up, Right trigger = pivot down
+        // When both pressed, prioritize down (safer default)
+        boolean catapultUpButton = gamepad1.right_bumper;
+        boolean catapultDownButton = gamepad1.right_trigger > 0.2;
+        if (catapultUpButton && catapultDownButton) {
+            catapultUpButton = false; // Prioritize down when both pressed
+        }
+
+        if (catapultUpButton) {
+            catapult.pivotUp();
+        } else if (catapultDownButton) {
+            catapult.pivotDown();
+        } else {
+            catapult.hold();
+        }
     }
 
     private void handleOperatorControls() {
@@ -243,6 +287,14 @@ public class TeleopMain extends OpMode {
         telemetry.addData("=== AUTO-LAUNCH ===", "");
         scoringSequence.addTelemetry();
 
+        // Catapult
+        telemetry.addData("=== CATAPULT ===", "");
+        catapult.addTelemetry();
+
+        // Foot
+        telemetry.addData("=== FOOT ===", "");
+        foot.addTelemetry();
+
         // Limelight
         telemetry.addData("=== LIMELIGHT ===", "");
         limelight.addTelemetry();
@@ -263,6 +315,8 @@ public class TeleopMain extends OpMode {
         hopper.stopAll();
         limelight.stop();
         scoringSequence.cancel();
+        catapult.stop();
+        foot.stop();
 
         telemetry.addData("Status", "TeleOp Stopped");
         telemetry.addData("Final Runtime", "%.1f seconds", runtime.seconds());
