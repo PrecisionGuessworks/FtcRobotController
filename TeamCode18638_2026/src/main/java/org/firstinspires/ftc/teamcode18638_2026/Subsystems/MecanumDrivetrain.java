@@ -45,11 +45,11 @@ public class MecanumDrivetrain {
 
         // Set motor directions (adjust based on your robot's wiring)
         // These are typical for mecanum drivetrains
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
-        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
         // SparkMini direction is set via CRServo.Direction
-        backLeftMotor.setDirection(CRServo.Direction.REVERSE);
+        backLeftMotor.setDirection(CRServo.Direction.FORWARD);
 
         // Set zero power behavior to brake (DcMotors only - SparkMini doesn't support this)
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
