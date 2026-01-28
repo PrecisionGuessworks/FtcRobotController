@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode18638_2026.Subsystems.AgitatorSubsystem;
 import org.firstinspires.ftc.teamcode18638_2026.Subsystems.FeederSubsystem;
 import org.firstinspires.ftc.teamcode18638_2026.Subsystems.FlywheelSubsystem;
 import org.firstinspires.ftc.teamcode18638_2026.Subsystems.MecanumDrivetrain;
@@ -16,22 +15,20 @@ import org.firstinspires.ftc.teamcode18638_2026.Subsystems.MecanumDrivetrain;
  * DRIVER (Gamepad1) Controls:
  * - Left Stick: Strafe (X/Y movement)
  * - Right Stick X: Rotate
- * - Square Button: Reset heading (field-centric)
+ * - Share Button: Reset heading (field-centric)
  *
  * FLYWHEEL CONTROLS:
  * - Circle: Spin flywheel to bank velocity (near shots)
  * - Square: Spin flywheel to max velocity
  * - Options: Reverse flywheel (manual)
  *
- * AUTO SHOT CONTROLS (flywheel + feeder + agitator):
+ * AUTO SHOT CONTROLS (flywheel + feeder):
  * - Right Bumper: Bank shot auto (near)
  * - Left Bumper: Far shot auto
  *
  * MANUAL CONTROLS:
  * - Cross: Feeder forward (manual)
  * - Triangle: Feeder reverse (manual)
- * - D-Pad Left: Agitator forward
- * - D-Pad Right: Agitator reverse
  */
 @TeleOp(name="TeleOp Main 2026", group="Competition")
 public class TeleopMain extends OpMode {
@@ -40,7 +37,6 @@ public class TeleopMain extends OpMode {
     private MecanumDrivetrain drivetrain;
     private FlywheelSubsystem flywheel;
     private FeederSubsystem feeder;
-    private AgitatorSubsystem agitator;
 
     // State tracking
     private ElapsedTime runtime = new ElapsedTime();
@@ -56,14 +52,13 @@ public class TeleopMain extends OpMode {
             drivetrain = new MecanumDrivetrain(hardwareMap, telemetry);
             flywheel = new FlywheelSubsystem(hardwareMap, telemetry);
             feeder = new FeederSubsystem(hardwareMap, telemetry);
-            agitator = new AgitatorSubsystem(hardwareMap, telemetry);
 
             telemetry.addData("Status", "Initialized - Ready to start!");
             telemetry.addData("", "");
             telemetry.addData("Drive", "Left stick=strafe, Right stick=rotate");
             telemetry.addData("Flywheel", "Circle=bank, Square=max, Options=reverse");
             telemetry.addData("Auto Shot", "RB=bank shot, LB=far shot");
-            telemetry.addData("Manual", "Cross/Triangle=feeder, D-pad=agitator");
+            telemetry.addData("Manual", "Cross/Triangle=feeder");
 
         } catch (Exception e) {
             telemetry.addData("INIT ERROR", e.getMessage());
@@ -113,37 +108,36 @@ public class TeleopMain extends OpMode {
             // Manual reverse flywheel
             flywheel.reverse();
             feeder.stop();
-            stopAgitatorIfNotManual();
 
         } else if (gamepad1.left_bumper) {
-            // Far shot auto - flywheel + feeder + agitator when ready
+            // Far shot auto - flywheel + feeder when ready
             farShotAuto();
 
         } else if (gamepad1.right_bumper) {
-            // Bank shot auto - flywheel + feeder + agitator when ready
+            // Bank shot auto - flywheel + feeder when ready
             bankShotAuto();
 
         } else if (gamepad1.circle) {
             // Spin flywheel to bank velocity only
             flywheel.setBankVelocity();
-            handleManualFeederAndAgitator();
+            handleManualFeeder();
 
         } else if (gamepad1.square) {
             // Spin flywheel to max velocity only
             flywheel.setMaxVelocity();
-            handleManualFeederAndAgitator();
+            handleManualFeeder();
 
         } else {
             // No flywheel button pressed - stop flywheel, handle manual controls
             flywheel.stop();
-            handleManualFeederAndAgitator();
+            handleManualFeeder();
         }
     }
 
     /**
-     * Handles manual feeder and agitator controls when not in auto mode
+     * Handles manual feeder controls when not in auto mode
      */
-    private void handleManualFeederAndAgitator() {
+    private void handleManualFeeder() {
         // Manual feeder control
         if (gamepad1.cross) {
             feeder.feedManual();
@@ -152,33 +146,14 @@ public class TeleopMain extends OpMode {
         } else {
             feeder.stop();
         }
-
-        // Manual agitator control
-        if (gamepad1.dpad_left) {
-            agitator.forward();
-        } else if (gamepad1.dpad_right) {
-            agitator.reverse();
-        } else {
-            agitator.stop();
-        }
-    }
-
-    /**
-     * Stops agitator only if not under manual control
-     */
-    private void stopAgitatorIfNotManual() {
-        if (!gamepad1.dpad_left && !gamepad1.dpad_right) {
-            agitator.stop();
-        }
     }
 
     /**
      * Bank shot auto - near shots
-     * Spins up flywheel, runs agitator, feeds when flywheel is ready
+     * Spins up flywheel, feeds when flywheel is ready
      */
     private void bankShotAuto() {
         flywheel.setBankVelocity();
-        agitator.reverse(); // Agitator runs in reverse per sample code
 
         if (flywheel.isReadyForBankShot()) {
             feeder.feed();
@@ -189,11 +164,10 @@ public class TeleopMain extends OpMode {
 
     /**
      * Far shot auto - far shots
-     * Spins up flywheel, runs agitator, feeds when flywheel is ready
+     * Spins up flywheel, feeds when flywheel is ready
      */
     private void farShotAuto() {
         flywheel.setFarVelocity();
-        agitator.reverse(); // Agitator runs in reverse per sample code
 
         if (flywheel.isReadyForFarShot()) {
             feeder.feed();
@@ -218,10 +192,6 @@ public class TeleopMain extends OpMode {
         telemetry.addData("=== FEEDER ===", "");
         feeder.addTelemetry();
 
-        // Agitator
-        telemetry.addData("=== AGITATOR ===", "");
-        agitator.addTelemetry();
-
         telemetry.update();
     }
 
@@ -231,7 +201,6 @@ public class TeleopMain extends OpMode {
         drivetrain.stop();
         flywheel.stop();
         feeder.stop();
-        agitator.stop();
 
         telemetry.addData("Status", "TeleOp Stopped");
         telemetry.addData("Final Runtime", "%.1f seconds", runtime.seconds());

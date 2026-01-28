@@ -25,10 +25,6 @@ public class Constants {
         public static final String FEEDER_MOTOR = "coreHex";
     }
 
-    public static class AgitatorHardware {
-        public static final String AGITATOR_SERVO = "servo";
-    }
-
     // ==================== DRIVETRAIN CONSTANTS ====================
 
     public static class DrivetrainConstants {
@@ -69,12 +65,4 @@ public class Constants {
         public static final double MANUAL_POWER = 0.5;
     }
 
-    // ==================== AGITATOR CONSTANTS ====================
-
-    public static class AgitatorConstants {
-        // CRServo power values
-        public static final double FORWARD_POWER = 1.0;
-        public static final double REVERSE_POWER = -1.0;
-        public static final double STOP_POWER = 0.0;
-    }
 }

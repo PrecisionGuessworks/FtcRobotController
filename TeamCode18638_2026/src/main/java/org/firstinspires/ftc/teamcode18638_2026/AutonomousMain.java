@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode18638_2026.Subsystems.AgitatorSubsystem;
 import org.firstinspires.ftc.teamcode18638_2026.Subsystems.FeederSubsystem;
 import org.firstinspires.ftc.teamcode18638_2026.Subsystems.FlywheelSubsystem;
 import org.firstinspires.ftc.teamcode18638_2026.Subsystems.MecanumDrivetrain;
@@ -21,7 +20,6 @@ public class AutonomousMain extends LinearOpMode {
     private MecanumDrivetrain drivetrain;
     private FlywheelSubsystem flywheel;
     private FeederSubsystem feeder;
-    private AgitatorSubsystem agitator;
 
     // Timing
     private ElapsedTime runtime = new ElapsedTime();
@@ -52,7 +50,6 @@ public class AutonomousMain extends LinearOpMode {
         drivetrain.stop();
         flywheel.stop();
         feeder.stop();
-        agitator.stop();
     }
 
     private void initializeSubsystems() {
@@ -62,7 +59,6 @@ public class AutonomousMain extends LinearOpMode {
         drivetrain = new MecanumDrivetrain(hardwareMap, telemetry);
         flywheel = new FlywheelSubsystem(hardwareMap, telemetry);
         feeder = new FeederSubsystem(hardwareMap, telemetry);
-        agitator = new AgitatorSubsystem(hardwareMap, telemetry);
 
         telemetry.addData("Status", "Initialization complete");
         telemetry.update();
