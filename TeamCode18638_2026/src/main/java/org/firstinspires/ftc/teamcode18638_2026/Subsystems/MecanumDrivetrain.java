@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode18638_2026.Subsystems;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -13,12 +14,16 @@ import org.firstinspires.ftc.teamcode18638_2026.Constants.DrivetrainConstants;
 /**
  * MecanumDrivetrain - Controls mecanum drivetrain with field-centric capability
  * Supports both robot-centric and field-centric drive modes
+ *
+ * Motor configuration:
+ * - Front Left, Front Right, Back Right: DcMotor (Control Hub motor ports)
+ * - Back Left: CRServo via Rev SparkMini motor controller (PWM port)
  */
 public class MecanumDrivetrain {
 
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
-    private DcMotor backLeftMotor;
+    private CRServo backLeftMotor;  // Connected via SparkMini motor controller
     private DcMotor backRightMotor;
     private IMU imu;
     private Telemetry telemetry;
@@ -30,29 +35,30 @@ public class MecanumDrivetrain {
     public MecanumDrivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        // Initialize motors
+        // Initialize DcMotors (Control Hub motor ports)
         frontLeftMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.FRONT_LEFT_MOTOR);
         frontRightMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.FRONT_RIGHT_MOTOR);
-        backLeftMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.BACK_LEFT_MOTOR);
         backRightMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.BACK_RIGHT_MOTOR);
+
+        // Initialize CRServo for back left (SparkMini motor controller on PWM port)
+        backLeftMotor = hardwareMap.get(CRServo.class, Constants.DrivetrainHardware.BACK_LEFT_MOTOR);
 
         // Set motor directions (adjust based on your robot's wiring)
         // These are typical for mecanum drivetrains
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        // SparkMini direction is set via CRServo.Direction
+        backLeftMotor.setDirection(CRServo.Direction.REVERSE);
 
-        // Set zero power behavior to brake
+        // Set zero power behavior to brake (DcMotors only - SparkMini doesn't support this)
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Set run mode
+        // Set run mode (DcMotors only - SparkMini doesn't support encoder modes)
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Initialize IMU

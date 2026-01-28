@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode18638_2026.Subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -8,11 +8,12 @@ import org.firstinspires.ftc.teamcode18638_2026.Constants;
 import org.firstinspires.ftc.teamcode18638_2026.Constants.FeederConstants;
 
 /**
- * FeederSubsystem - Controls the Core Hex motor that feeds balls to the flywheel
+ * FeederSubsystem - Controls the feeder motor via Rev SparkMini motor controller
+ * SparkMini is connected to a PWM port and accessed as a CRServo
  */
 public class FeederSubsystem {
 
-    private DcMotor feederMotor;
+    private CRServo feederMotor;  // Connected via SparkMini motor controller
     private Telemetry telemetry;
 
     private FeederState currentState = FeederState.STOPPED;
@@ -26,17 +27,11 @@ public class FeederSubsystem {
     public FeederSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        // Initialize motor
-        feederMotor = hardwareMap.get(DcMotor.class, Constants.FeederHardware.FEEDER_MOTOR);
+        // Initialize CRServo (SparkMini motor controller on PWM port)
+        feederMotor = hardwareMap.get(CRServo.class, Constants.FeederHardware.FEEDER_MOTOR);
 
-        // Set motor direction
-        feederMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        // Set motor mode
-        feederMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Set zero power behavior
-        feederMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        // Set motor direction via CRServo.Direction
+        feederMotor.setDirection(CRServo.Direction.REVERSE);
     }
 
     /**
