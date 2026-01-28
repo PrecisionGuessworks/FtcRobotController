@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode18638_2026.Subsystems;
 
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -31,7 +32,7 @@ public class FeederSubsystem {
         feederMotor = hardwareMap.get(CRServo.class, Constants.FeederHardware.FEEDER_MOTOR);
 
         // Set motor direction via CRServo.Direction
-        feederMotor.setDirection(CRServo.Direction.REVERSE);
+        feederMotor.setDirection(CRServo.Direction.FORWARD);
     }
 
     /**
