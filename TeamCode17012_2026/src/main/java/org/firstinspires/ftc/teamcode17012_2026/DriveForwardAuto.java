@@ -32,7 +32,7 @@ public class DriveForwardAuto extends LinearOpMode {
         //Drive Forward for 0.5 seconds
         drivetrain.drive(0.0, -0.75, 0.0);
         utilities.delay( 2750);
-        drivetrain.stopDriving();
+        drivetrain.stop();
     }
         //x positive=right, y positive=back, rotation positive=right
     public void getTelemetry() {
