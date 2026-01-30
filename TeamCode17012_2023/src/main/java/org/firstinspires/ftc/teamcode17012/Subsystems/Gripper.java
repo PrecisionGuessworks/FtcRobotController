@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Gripper {
     Telemetry telemetry;
-
+    
     Servo gripperLeft,gripperRight;
 
     public Gripper(HardwareMap hardwareMap, Telemetry telemetry) {
