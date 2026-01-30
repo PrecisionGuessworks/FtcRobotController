@@ -67,8 +67,8 @@ public class MecanumDrivetrain {
         // Define hub orientation
         // Adjust these parameters based on how the Control Hub is mounted on your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-            RevHubOrientationOnRobot.LogoFacingDirection.UP,
-            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+            RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+            RevHubOrientationOnRobot.UsbFacingDirection.UP));
 
         imu.initialize(parameters);
         imu.resetYaw(); // Reset heading to 0
