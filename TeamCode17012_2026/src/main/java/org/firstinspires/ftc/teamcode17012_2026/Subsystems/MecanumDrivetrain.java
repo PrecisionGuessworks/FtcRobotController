@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode17012_2026.Subsystems;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -13,13 +13,16 @@ import org.firstinspires.ftc.teamcode17012_2026.Constants.DrivetrainConstants;
 /**
  * MecanumDrivetrain - Controls mecanum drivetrain with field-centric capability
  * Supports both robot-centric and field-centric drive modes
+ *
+ * Motor configuration:
+ * - All 4 drive motors connected via Rev SparkMini motor controllers (PWM ports)
  */
 public class MecanumDrivetrain {
 
-    private DcMotor frontLeftMotor;
-    private DcMotor frontRightMotor;
-    private DcMotor backLeftMotor;
-    private DcMotor backRightMotor;
+    private CRServo frontLeftMotor;   // Connected via SparkMini
+    private CRServo frontRightMotor;  // Connected via SparkMini
+    private CRServo backLeftMotor;    // Connected via SparkMini
+    private CRServo backRightMotor;   // Connected via SparkMini
     private IMU imu;
     private Telemetry telemetry;
 
@@ -30,39 +33,29 @@ public class MecanumDrivetrain {
     public MecanumDrivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        // Initialize motors
-        frontLeftMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.FRONT_LEFT_MOTOR);
-        frontRightMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.FRONT_RIGHT_MOTOR);
-        backLeftMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.BACK_LEFT_MOTOR);
-        backRightMotor = hardwareMap.get(DcMotor.class, Constants.DrivetrainHardware.BACK_RIGHT_MOTOR);
+        // Initialize CRServos (all 4 drive motors via SparkMini controllers on PWM ports)
+        frontLeftMotor = hardwareMap.get(CRServo.class, Constants.DrivetrainHardware.FRONT_LEFT_MOTOR);
+        frontRightMotor = hardwareMap.get(CRServo.class, Constants.DrivetrainHardware.FRONT_RIGHT_MOTOR);
+        backLeftMotor = hardwareMap.get(CRServo.class, Constants.DrivetrainHardware.BACK_LEFT_MOTOR);
+        backRightMotor = hardwareMap.get(CRServo.class, Constants.DrivetrainHardware.BACK_RIGHT_MOTOR);
 
         // Set motor directions (adjust based on your robot's wiring)
         // These are typical for mecanum drivetrains
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
-        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor.setDirection(CRServo.Direction.REVERSE);
+        backLeftMotor.setDirection(CRServo.Direction.REVERSE);
+        frontRightMotor.setDirection(CRServo.Direction.FORWARD);
+        backRightMotor.setDirection(CRServo.Direction.FORWARD);
 
-        // Set zero power behavior to brake
-        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        // Set run mode
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // Note: SparkMini controllers don't support brake mode or encoder modes
 
         // Initialize IMU
         imu = hardwareMap.get(IMU.class, Constants.DrivetrainHardware.IMU);
 
         // Define hub orientation
-        // Adjust these parameters based on how the Control Hub is mounted on your robot
+        // Control Hub is mounted with logo facing BACKWARD and USB ports facing UP
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-            RevHubOrientationOnRobot.LogoFacingDirection.UP,
-            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+            RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
+            RevHubOrientationOnRobot.UsbFacingDirection.UP));
 
         imu.initialize(parameters);
         imu.resetYaw(); // Reset heading to 0
