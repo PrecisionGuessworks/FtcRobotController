@@ -41,10 +41,10 @@ public class MecanumDrivetrain {
 
         // Set motor directions (adjust based on your robot's wiring)
         // These are typical for mecanum drivetrains
-        frontLeftMotor.setDirection(CRServo.Direction.REVERSE);
-        backLeftMotor.setDirection(CRServo.Direction.REVERSE);
-        frontRightMotor.setDirection(CRServo.Direction.FORWARD);
-        backRightMotor.setDirection(CRServo.Direction.FORWARD);
+        frontLeftMotor.setDirection(CRServo.Direction.FORWARD);
+        backLeftMotor.setDirection(CRServo.Direction.FORWARD);
+        frontRightMotor.setDirection(CRServo.Direction.REVERSE);
+        backRightMotor.setDirection(CRServo.Direction.REVERSE);
 
         // Note: SparkMini controllers don't support brake mode or encoder modes
 

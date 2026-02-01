@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode18638_2026.Subsystems.MecanumDrivetrain;
  * DRIVER (Gamepad1) Controls:
  * - Left Stick: Strafe (X/Y movement)
  * - Right Stick X: Rotate
- * - Share Button: Reset heading (field-centric)
+ * - D-Pad Up: Reset heading (field-centric)
  *
  * FLYWHEEL CONTROLS:
  * - Circle: Spin flywheel to bank velocity (near shots)
@@ -92,13 +92,12 @@ public class TeleopMain extends OpMode {
 
         drivetrain.drive(strafe, forward, rotate);
 
-        // Reset heading (Square button on drive - use different button since square is flywheel)
-        // Using touchpad or share button instead
-        if (gamepad1.share && !lastSquareButton) {
+        // Reset heading (D-Pad Up - rising edge)
+        if (gamepad1.dpad_up && !lastSquareButton) {
             drivetrain.resetHeading();
             telemetry.addData("Heading", "RESET");
         }
-        lastSquareButton = gamepad1.share;
+        lastSquareButton = gamepad1.dpad_up;
     }
 
     private void handleFlywheelControls() {

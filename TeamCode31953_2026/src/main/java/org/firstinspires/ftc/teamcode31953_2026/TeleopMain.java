@@ -17,10 +17,10 @@ import org.firstinspires.ftc.teamcode31953_2026.Subsystems.MecanumDrivetrain;
  * - Left Stick: Strafe (X/Y movement)
  * - Right Stick X: Rotate
  * - Square Button: Reset heading (field-centric)
- * - Left Trigger: Intake in
- * - Left Bumper: Intake out (outtake)
- * - Cross (A): Lower foot (deploy for stability)
- * - Circle (B): Raise foot (stow)
+ * - Left Bumper: Intake in
+ * - Left Trigger: Intake out (outtake)
+ * - D-Pad Down: Lower foot (deploy for stability)
+ * - D-Pad Up: Raise foot (stow)
  * - Right Bumper: Pivot catapult up
  * - Right Trigger: Pivot catapult down
  */
@@ -53,8 +53,8 @@ public class TeleopMain extends OpMode {
             telemetry.addData("", "");
             telemetry.addData("Drive", "Left stick=strafe, Right stick=rotate");
             telemetry.addData("Drive", "Square=reset heading");
-            telemetry.addData("Intake", "LT=in, LB=out");
-            telemetry.addData("Foot", "Cross=down, Circle=up");
+            telemetry.addData("Intake", "LB=in, LT=out");
+            telemetry.addData("Foot", "DPad Down=down, DPad Up=up");
             telemetry.addData("Catapult", "RB=up, RT=down");
 
         } catch (Exception e) {
@@ -100,10 +100,10 @@ public class TeleopMain extends OpMode {
     }
 
     private void handleIntakeControls() {
-        // Left trigger = intake in, Left bumper = intake out
+        // Left bumper = intake in, Left trigger = intake out (outtake)
         // When both pressed, prioritize out (safer to eject)
-        boolean intakeInButton = gamepad1.left_trigger > 0.2;
-        boolean intakeOutButton = gamepad1.left_bumper;
+        boolean intakeInButton = gamepad1.left_bumper;
+        boolean intakeOutButton = gamepad1.left_trigger > 0.2;
 
         if (intakeInButton && intakeOutButton) {
             intakeInButton = false; // Prioritize out when both pressed
@@ -119,10 +119,10 @@ public class TeleopMain extends OpMode {
     }
 
     private void handleFootControls() {
-        // Cross (A) = lower foot, Circle (B) = raise foot
+        // D-Pad Down = lower foot, D-Pad Up = raise foot
         // When both pressed, prioritize raising (safer default)
-        boolean footDownButton = gamepad1.cross;
-        boolean footUpButton = gamepad1.circle;
+        boolean footDownButton = gamepad1.dpad_down;
+        boolean footUpButton = gamepad1.dpad_up;
 
         if (footDownButton && footUpButton) {
             footDownButton = false; // Prioritize up when both pressed
