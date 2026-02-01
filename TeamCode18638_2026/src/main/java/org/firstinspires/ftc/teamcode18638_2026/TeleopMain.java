@@ -40,7 +40,11 @@ public class TeleopMain extends OpMode {
 
     // State tracking
     private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime autoShotReleaseTimer = new ElapsedTime();
     private boolean lastSquareButton = false;
+
+    // Grace period (seconds) to keep flywheel spinning after releasing auto-shot button
+    private static final double AUTO_SHOT_GRACE_PERIOD = 0.5;
 
     @Override
     public void init() {
@@ -101,8 +105,12 @@ public class TeleopMain extends OpMode {
     }
 
     private void handleFlywheelControls() {
-        // Priority order for flywheel controls (matching REV Starter Bot logic)
+        // Reset grace period timer while auto-shot buttons are held
+        if (gamepad1.left_bumper || gamepad1.right_bumper) {
+            autoShotReleaseTimer.reset();
+        }
 
+        // Priority order for flywheel controls (matching REV Starter Bot logic)
         if (gamepad1.options) {
             // Manual reverse flywheel
             flywheel.reverse();
@@ -124,6 +132,11 @@ public class TeleopMain extends OpMode {
         } else if (gamepad1.square) {
             // Spin flywheel to max velocity only
             flywheel.setMaxVelocity();
+            handleManualFeeder();
+
+        } else if (autoShotReleaseTimer.seconds() < AUTO_SHOT_GRACE_PERIOD) {
+            // Grace period: keep flywheel spinning after auto-shot release
+            // so a quick re-press doesn't require full spin-up
             handleManualFeeder();
 
         } else {
