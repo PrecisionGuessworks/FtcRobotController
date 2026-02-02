@@ -31,6 +31,7 @@ public class MecanumDrivetrain {
     private double speedMultiplier = DrivetrainConstants.NORMAL_SPEED;
     private boolean fieldCentricEnabled = DrivetrainConstants.USE_FIELD_CENTRIC;
     private double headingOffset = 0.0; // For resetting field-centric heading
+    private double lastGoodHeading = 0.0; // Cached heading for IMU NaN protection
 
     public MecanumDrivetrain(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -149,7 +150,12 @@ public class MecanumDrivetrain {
      * @return Heading in radians (-PI to PI)
      */
     public double getHeading() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS) - headingOffset;
+        double rawYaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        if (Double.isNaN(rawYaw)) {
+            return lastGoodHeading;
+        }
+        lastGoodHeading = rawYaw - headingOffset;
+        return lastGoodHeading;
     }
 
     /**
